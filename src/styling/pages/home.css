@@ -1,0 +1,371 @@
+/* =========================================
+   HOME / HERO
+========================================= */
+
+.home-page {
+  /* Intro animations wait for the page loader to lift. Tune to match its duration. */
+  --home-delay: 0.85s;
+  --home-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  min-height: 75vh;
+  display: flex;
+  align-items: center;
+  padding: 80px 0;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(125deg, #f3f8f7, #e7f5f2);
+}
+
+.home-content {
+  position: relative;
+}
+
+/* =========================================
+   BACKGROUND
+========================================= */
+
+.home-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.home-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  will-change: transform;
+}
+
+.home-orb--one {
+  top: -140px;
+  right: -80px;
+  width: 460px;
+  height: 460px;
+  background: radial-gradient(circle, rgba(8, 127, 118, 0.22), transparent 70%);
+  animation: home-drift 16s ease-in-out infinite alternate;
+}
+
+.home-orb--two {
+  bottom: -180px;
+  left: -100px;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(60, 197, 180, 0.18), transparent 70%);
+  animation: home-drift 20s ease-in-out infinite alternate-reverse;
+}
+
+/* Faint dot grid, fading out toward the bottom-left */
+.home-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(8, 127, 118, 0.18) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse at 80% 20%, #000, transparent 65%);
+  mask-image: radial-gradient(ellipse at 80% 20%, #000, transparent 65%);
+}
+
+/* =========================================
+   TEXT
+========================================= */
+
+.home-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.home-label-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.home-label-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: home-ping 2.2s ease-out infinite;
+}
+
+.home-page h1 {
+  max-width: 800px;
+  margin: 24px 0;
+  font-size: clamp(36px, 5vw, 64px);
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+/* Each line rises out of a mask */
+.home-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em; /* room for descenders (g, p) inside the mask */
+  margin-bottom: -0.12em;
+}
+
+.home-line-inner {
+  display: inline-block;
+  animation: home-line-rise 0.9s var(--home-ease) backwards;
+  animation-delay: calc(var(--home-delay) + 120ms + var(--i, 0) * 130ms);
+}
+
+/* Second line: shifting gradient (plain colour if gradient text is unsupported) */
+.home-line--accent .home-line-inner {
+  color: var(--primary);
+  background: linear-gradient(90deg, var(--primary), #3cc5b4, var(--primary));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation:
+    home-line-rise 0.9s var(--home-ease) backwards,
+    home-shimmer 6s ease-in-out infinite alternate;
+  animation-delay:
+    calc(var(--home-delay) + 120ms + var(--i, 0) * 130ms),
+    0s;
+}
+
+.home-description {
+  max-width: 600px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+/* Generic staggered entrance (fill-mode `backwards`, so hover transforms still work afterwards) */
+.home-reveal {
+  animation: home-rise 0.8s var(--home-ease) backwards;
+  animation-delay: calc(var(--home-delay) + var(--i, 0) * 100ms);
+}
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.home-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s var(--home-ease),
+    box-shadow 0.25s ease;
+}
+
+.home-btn svg {
+  transition: transform 0.25s var(--home-ease);
+}
+
+.home-btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: none;
+}
+
+.home-btn:focus-visible,
+.home-area:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.home-btn--primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Light sweep on hover */
+.home-btn--primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.3) 50%, transparent 80%);
+  transform: translateX(-120%);
+}
+
+.home-btn--primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(8, 127, 118, 0.25);
+}
+
+.home-btn--primary:hover::before {
+  transform: translateX(120%);
+  transition: transform 0.7s var(--home-ease);
+}
+
+.home-btn--primary:hover svg {
+  transform: translate(3px, -3px);
+}
+
+.home-btn--ghost {
+  border: 1px solid rgba(8, 127, 118, 0.35);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--primary);
+}
+
+.home-btn--ghost:hover {
+  background: #fff;
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(12, 48, 44, 0.1);
+}
+
+.home-btn--ghost:hover svg {
+  transform: translateX(4px);
+}
+
+/* =========================================
+   FOCUS AREAS
+========================================= */
+
+.home-areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-area {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border: 1px solid rgba(8, 127, 118, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+  color: #3f565e;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s var(--home-ease),
+    box-shadow 0.25s ease;
+}
+
+.home-area svg {
+  color: var(--primary);
+  transition: transform 0.3s var(--home-ease);
+}
+
+.home-area:hover {
+  background: #fff;
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(12, 48, 44, 0.09);
+}
+
+.home-area:hover svg {
+  transform: scale(1.18) rotate(-6deg);
+}
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes home-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+}
+
+@keyframes home-line-rise {
+  from {
+    opacity: 0;
+    transform: translateY(110%);
+  }
+}
+
+@keyframes home-shimmer {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+
+@keyframes home-ping {
+  0%   { transform: scale(1); opacity: 0.7; }
+  80%, 100% { transform: scale(3.2); opacity: 0; }
+}
+
+@keyframes home-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-50px, 40px, 0) scale(1.15); }
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 750px) {
+  .home-page {
+    padding: 60px 0;
+  }
+
+  .home-areas {
+    margin-top: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-actions {
+    flex-direction: column;
+  }
+
+  .home-btn {
+    justify-content: center;
+  }
+
+  .home-page h1 {
+    letter-spacing: -1.2px;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page *,
+  .home-page *::before,
+  .home-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

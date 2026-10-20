@@ -1,0 +1,224 @@
+/* =========================================
+   GLOBAL STYLES
+
+   Fonts (DM Sans, Instrument Serif, Manrope) are loaded by the <link> in
+   index.html. Do not @import them here: a CSS @import is fetched only after
+   this file downloads, which delays text rendering, and it would load
+   the fonts twice.
+========================================= */
+
+:root {
+  --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+
+  --primary: #183d37;
+  --primary-dark: #102e29;
+  --primary-light: #e5ede8;
+
+  --accent: #0c8575;
+  --charcoal: #183d37;
+  --muted: #67746f;
+
+  --background: #f7f8f5;
+  --white: #ffffff;
+  --border: #dfe5df;
+
+  --container-width: 1240px;
+  --gutter: 48px;
+
+  --transition: 0.25s ease;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Space kept above anchor targets so the sticky navbar never covers them */
+  --scroll-offset: 96px;
+
+  font-family: var(--font-body);
+  color: var(--primary);
+  background: var(--background);
+  color-scheme: light;
+}
+
+/* =========================================
+   RESET
+========================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: var(--scroll-offset);
+}
+
+/* Smooth anchor scrolling only for people who haven't asked for less motion */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  min-height: 100dvh; /* accounts for mobile browser toolbars */
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance; /* avoids one-word last lines in headings */
+}
+
+.editorial-heading {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation; /* removes the tap delay on touch screens */
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+ul {
+  list-style: none;
+}
+
+::selection {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* =========================================
+   LAYOUT
+========================================= */
+
+/* Side gutters also respect the notch / rounded corners in landscape (needs viewport-fit=cover) */
+.container {
+  width: min(
+    var(--container-width),
+    calc(
+      100% - var(--gutter) - env(safe-area-inset-left, 0px) -
+        env(safe-area-inset-right, 0px)
+    )
+  );
+  margin-inline: auto;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --gutter: 32px;
+    --scroll-offset: 80px;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* Visible only for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link: <a className="skip-link" href="#main-content">Skip to content</a>
+   as the first element in App, plus id="main-content" on each page's <main> */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 10000;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform 0.25s var(--ease-out);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Reduced motion.
+   Infinite animations must be limited to ONE iteration: with only a 0.01ms
+   duration they would otherwise restart thousands of times a second. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

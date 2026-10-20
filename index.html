@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <!-- Character encoding and responsive viewport (viewport-fit=cover enables safe-area insets on notched phones) -->
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+
+    <!-- Instant brand-coloured screen while the JS bundle loads.
+         The pseudo-element vanishes by itself once React fills #root,
+         handing over seamlessly to the animated loader. -->
+    <style>
+      #root:empty::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #183d37;
+      }
+    </style>
+    <noscript>
+      <style>
+        #root:empty::before {
+          display: none;
+        }
+      </style>
+    </noscript>
+
+    <!-- Primary SEO (site-wide defaults; override per route, see note below) -->
+    <title>FinCore Advisors | Tax, Accounting &amp; Business Advisory Services</title>
+
+    <meta
+      name="description"
+      content="FinCore Advisors provides income tax, GST, accounting, business registration and financial advisory services in Jaipur, India. Explore our services and get in touch."
+    />
+
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <!--
+      NOTE: no <link rel="canonical"> and no og:url here on purpose.
+      This file is served for EVERY route of the app, so a hard-coded
+      canonical would tell search engines that /about, /services, /blogs...
+      are all duplicates of the home page. Set title, description,
+      canonical and og:url per route instead (react-helmet-async, or the
+      built-in <title>/<meta>/<link> support in React 19).
+    -->
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#183D37" />
+    <meta name="color-scheme" content="light" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph / social sharing (defaults) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:site_name" content="FinCore Advisors" />
+    <meta
+      property="og:title"
+      content="FinCore Advisors | Tax, Accounting &amp; Business Advisory"
+    />
+    <meta
+      property="og:description"
+      content="Considered financial, taxation and business advisory services. Explore income tax, GST, accounting and compliance solutions."
+    />
+    <meta
+      property="og:image"
+      content="https://www.example.com/og-cover.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="FinCore Advisors financial and tax advisory services"
+    />
+
+    <!-- Twitter / X cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="FinCore Advisors | Financial &amp; Tax Advisory"
+    />
+    <meta
+      name="twitter:description"
+      content="Independent tax, accounting, GST and business advisory services in Jaipur, India."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.example.com/og-cover.jpg"
+    />
+
+    <!-- Fonts: DM Sans (body), Instrument Serif (accent), Manrope (navbar brand) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Manrope:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Structured data: one graph, site-wide entities only.
+         Replace every example.com URL, the email and the phone with real values. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "AccountingService",
+            "@id": "https://www.example.com/#organization",
+            "name": "FinCore Advisors",
+            "url": "https://www.example.com/",
+            "description": "Financial, taxation, accounting and business advisory services in Jaipur, India.",
+            "email": "hello@example.com",
+            "telephone": "+91-9876543210",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Jaipur",
+              "addressRegion": "Rajasthan",
+              "addressCountry": "IN"
+            },
+            "areaServed": {
+              "@type": "Country",
+              "name": "India"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.example.com/#website",
+            "name": "FinCore Advisors",
+            "url": "https://www.example.com/",
+            "inLanguage": "en-IN",
+            "publisher": { "@id": "https://www.example.com/#organization" }
+          },
+          {
+            "@type": "ItemList",
+            "name": "Financial and Business Advisory Services",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                  "@type": "Service",
+                  "name": "Income Tax Services",
+                  "url": "https://www.example.com/services/income-tax",
+                  "provider": { "@id": "https://www.example.com/#organization" }
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                  "@type": "Service",
+                  "name": "GST Advisory Services",
+                  "url": "https://www.example.com/services/gst",
+                  "provider": { "@id": "https://www.example.com/#organization" }
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "item": {
+                  "@type": "Service",
+                  "name": "Accounting and Bookkeeping",
+                  "url": "https://www.example.com/services/accounting",
+                  "provider": { "@id": "https://www.example.com/#organization" }
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 4,
+                "item": {
+                  "@type": "Service",
+                  "name": "Business Registration",
+                  "url": "https://www.example.com/services/business-registration",
+                  "provider": { "@id": "https://www.example.com/#organization" }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+
+  <body>
+    <noscript>
+      FinCore Advisors needs JavaScript to run. Please enable it in your
+      browser, or contact us at hello@example.com.
+    </noscript>
+
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+/* =========================================
+   BOUTIQUE LOADER
+========================================= */
+
+.boutique-loader {
+  --loader-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --loader-duration: 1100ms; /* set from JS */
+  --loader-exit: 600ms;      /* set from JS */
+
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  background: #183d37;
+  color: #f7f8f5;
+}
+
+/* Soft breathing glow behind the wordmark */
+.boutique-loader::before {
+  content: "";
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(169, 216, 201, 0.16), transparent 65%);
+  animation: boutique-loader-breathe 3.2s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.boutique-loader-content {
+  position: relative;
+  width: min(320px, calc(100% - 48px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+
+/* =========================================
+   VARIANTS
+========================================= */
+
+/* Route change: fades in quickly (no hard cut), fades out */
+.boutique-loader--route {
+  animation: boutique-loader-fade-in 0.2s ease backwards;
+  transition:
+    opacity var(--loader-exit) ease,
+    visibility 0s linear var(--loader-exit);
+}
+
+.boutique-loader--route.boutique-loader-exit {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Route change is too short for the intro: show the logo immediately,
+   only the progress bar and the pulsing dot animate */
+.boutique-loader--route .boutique-loader-letter {
+  animation: none;
+}
+
+.boutique-loader--route .boutique-loader-dot {
+  animation: boutique-loader-dot-pulse 1.6s ease-in-out infinite;
+}
+
+.boutique-loader--route .boutique-loader-progress,
+.boutique-loader--route .boutique-loader-content p {
+  animation: none;
+}
+
+/* First visit: curtain lifts away */
+.boutique-loader--initial {
+  transition:
+    transform var(--loader-exit) cubic-bezier(0.76, 0, 0.24, 1),
+    visibility 0s linear var(--loader-exit);
+}
+
+.boutique-loader--initial.boutique-loader-exit {
+  transform: translateY(-100%);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Content drifts up and fades as the loader leaves */
+.boutique-loader-exit .boutique-loader-content {
+  opacity: 0;
+  transform: translateY(-16px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s var(--loader-ease);
+}
+
+/* =========================================
+   WORDMARK (letters rise out of a mask)
+========================================= */
+
+.boutique-loader-wordmark {
+  display: flex;
+  align-items: baseline;
+  overflow: hidden;
+  padding: 0.04em 0.06em 0.1em;
+  font-family: "DM Sans", sans-serif;
+  font-size: clamp(45px, 8vw, 66px);
+  font-weight: 700;
+  letter-spacing: -4px;
+  line-height: 1;
+}
+
+.boutique-loader-letter,
+.boutique-loader-dot {
+  display: inline-block;
+  animation: boutique-loader-letter 0.55s var(--loader-ease) both;
+  animation-delay: calc(var(--i, 0) * 40ms + 60ms);
+}
+
+.boutique-loader-dot {
+  color: #a9d8c9;
+  transform-origin: 50% 85%;
+  animation-name: boutique-loader-letter, boutique-loader-dot-pulse;
+  animation-duration: 0.55s, 1.6s;
+  animation-timing-function: var(--loader-ease), ease-in-out;
+  animation-iteration-count: 1, infinite;
+  animation-delay:
+    calc(var(--i, 0) * 40ms + 60ms),
+    calc(var(--i, 0) * 40ms + 700ms);
+}
+
+/* =========================================
+   PROGRESS (fills over the loader duration)
+========================================= */
+
+.boutique-loader-progress {
+  width: 190px;
+  height: 2px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.17);
+  border-radius: 2px;
+  animation: boutique-loader-fade-in 0.3s ease 0.15s both;
+}
+
+.boutique-loader-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #7fc4b0, #cfeee3);
+  transform-origin: left center;
+  transform: scaleX(0);
+  /* Runs to 90% over the minimum duration; the last 10% lands on exit */
+  animation: boutique-loader-fill var(--loader-duration) cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.boutique-loader-exit .boutique-loader-progress span {
+  animation: boutique-loader-complete 0.3s ease forwards;
+}
+
+.boutique-loader-content p {
+  margin: 0;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  color: #b2c9c0;
+  text-align: center;
+  animation: boutique-loader-caption 0.5s var(--loader-ease) 0.4s both;
+}
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes boutique-loader-fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes boutique-loader-letter {
+  from {
+    opacity: 0;
+    transform: translateY(105%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes boutique-loader-dot-pulse {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-5%) scale(1.22); }
+}
+
+@keyframes boutique-loader-fill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(0.9); }
+}
+
+@keyframes boutique-loader-complete {
+  from { transform: scaleX(0.9); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes boutique-loader-caption {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes boutique-loader-breathe {
+  from { transform: scale(0.85); opacity: 0.7; }
+  to   { transform: scale(1.15); opacity: 1; }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .boutique-loader {
+    display: none;
+  }
+
+  .boutique-loader *,
+  .boutique-loader::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}

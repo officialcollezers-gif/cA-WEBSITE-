@@ -1,0 +1,545 @@
+/* =========================================
+   COMPACT BOUTIQUE FOOTER
+========================================= */
+
+.boutique-footer {
+  --bf-bg: #183d37;
+  --bf-text: #f7f8f5;
+  --bf-muted: #b2c9c0;
+  --bf-faint: #9bb7ab;
+  --bf-accent: #a9d8c9;
+  --bf-line: rgba(255, 255, 255, 0.15);
+  --bf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  isolation: isolate;
+  background: var(--bf-bg);
+  color: var(--bf-text);
+  overflow: hidden;
+}
+
+/* Slow-floating soft glow behind the CTA */
+.boutique-footer::before {
+  content: "";
+  position: absolute;
+  top: -260px;
+  right: -120px;
+  z-index: -1;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(169, 216, 201, 0.18), transparent 65%);
+  animation: boutique-float 14s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.boutique-footer a:focus-visible,
+.boutique-footer button:focus-visible {
+  outline: 2px solid var(--bf-accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* =========================================
+   SCROLL REVEAL (staggered via --i)
+========================================= */
+
+.boutique-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.8s var(--bf-ease);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+.boutique-footer.is-visible .boutique-reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================
+   COMPACT CONSULTATION SECTION
+========================================= */
+
+.boutique-footer-cta {
+  padding: 35px 0 40px;
+  border-bottom: 1px solid var(--bf-line);
+}
+
+.boutique-footer-eyebrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 17px;
+  color: var(--bf-muted);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+}
+
+.boutique-footer-cta-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.boutique-footer-cta h2 {
+  font-family: "DM Sans", sans-serif;
+  font-size: clamp(30px, 3.2vw, 48px);
+  font-weight: 500;
+  letter-spacing: -1.8px;
+  line-height: 1.12;
+}
+
+/* Gently shifting highlight on the serif line */
+.boutique-footer-cta h2 em {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.8px;
+  color: var(--bf-accent); /* fallback if background-clip isn't supported */
+  background: linear-gradient(90deg, #a9d8c9 0%, #e6f7f0 50%, #a9d8c9 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: boutique-shimmer 6s ease-in-out infinite alternate;
+}
+
+.boutique-footer-cta-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 13px 18px;
+  flex-shrink: 0;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bf-text);
+  color: var(--bf-bg);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 0.25s ease,
+    transform 0.25s var(--bf-ease),
+    box-shadow 0.25s ease;
+}
+
+/* Light sweep on hover */
+.boutique-footer-cta-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.7) 50%, transparent 80%);
+  transform: translateX(-120%);
+}
+
+.boutique-footer-cta-button:hover {
+  background: #cce5db;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+.boutique-footer-cta-button:hover::before {
+  transform: translateX(120%);
+  transition: transform 0.7s var(--bf-ease);
+}
+
+.boutique-footer-cta-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.boutique-footer-cta-button svg {
+  transition: transform 0.25s var(--bf-ease);
+}
+
+.boutique-footer-cta-button:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* =========================================
+   MAIN FOOTER
+========================================= */
+
+.boutique-footer-main {
+  display: grid;
+  grid-template-columns: 1.6fr 0.8fr 1fr 1.3fr;
+  gap: 35px;
+  padding: 38px 0;
+}
+
+.boutique-footer-logo {
+  display: inline-block;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -1.8px;
+  line-height: 1;
+  color: #fff;
+  text-decoration: none;
+}
+
+.boutique-footer-logo span {
+  display: inline-block;
+  color: #9bd6c5;
+  transition: transform 0.4s var(--bf-ease);
+}
+
+.boutique-footer-logo:hover span {
+  transform: translateY(-4px) scale(1.25);
+}
+
+.boutique-footer-brand p {
+  max-width: 285px;
+  margin-top: 15px;
+  color: var(--bf-muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.boutique-footer-brand-caption {
+  display: block;
+  margin-top: 19px;
+  color: #86a99c;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* =========================================
+   FOOTER LINKS
+========================================= */
+
+.boutique-footer-column h3 {
+  margin-bottom: 17px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.boutique-footer-column ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.boutique-footer-column ul a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--bf-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+/* Underline draws in from the left under the label only */
+.boutique-footer-link-label {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  padding-bottom: 1px;
+  transition: background-size 0.35s var(--bf-ease);
+}
+
+.boutique-footer-column ul a svg {
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s var(--bf-ease);
+}
+
+.boutique-footer-column ul a:hover,
+.boutique-footer-column ul a:focus-visible {
+  color: #fff;
+}
+
+.boutique-footer-column ul a:hover .boutique-footer-link-label,
+.boutique-footer-column ul a:focus-visible .boutique-footer-link-label {
+  background-size: 100% 1px;
+}
+
+.boutique-footer-column ul a:hover svg,
+.boutique-footer-column ul a:focus-visible svg {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* =========================================
+   CONTACT INFORMATION
+========================================= */
+
+.boutique-footer-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-bottom: 14px;
+  font-style: normal;
+}
+
+.boutique-footer-contact-list > a,
+.boutique-footer-address {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--bf-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color 0.25s ease;
+}
+
+.boutique-footer-contact-list svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--bf-accent);
+  transition: transform 0.3s var(--bf-ease);
+}
+
+.boutique-footer-contact-list > a:hover {
+  color: #fff;
+}
+
+.boutique-footer-contact-list > a:hover svg {
+  transform: scale(1.18) rotate(-6deg);
+}
+
+.boutique-footer-contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--bf-accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: gap 0.3s var(--bf-ease);
+}
+
+.boutique-footer-contact-link:hover {
+  gap: 15px;
+}
+
+/* =========================================
+   BOTTOM BAR
+========================================= */
+
+.boutique-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 17px 0;
+  border-top: 1px solid var(--bf-line);
+  color: var(--bf-faint);
+  font-size: 10px;
+}
+
+.boutique-footer-bottom p {
+  margin: 0;
+}
+
+.boutique-footer-bottom-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.boutique-footer-bottom-links a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.boutique-footer-bottom-links a:hover {
+  color: #fff;
+}
+
+.boutique-footer-signature {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Back to top */
+.boutique-footer-top {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s var(--bf-ease);
+}
+
+.boutique-footer-top svg {
+  transition: transform 0.25s var(--bf-ease);
+}
+
+.boutique-footer-top:hover {
+  background: var(--bf-text);
+  color: var(--bf-bg);
+  border-color: var(--bf-text);
+  transform: translateY(-3px);
+}
+
+.boutique-footer-top:hover svg {
+  transform: translateY(-2px);
+}
+
+.boutique-footer-top:active {
+  transform: translateY(0) scale(0.94);
+}
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes boutique-float {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-60px, 40px, 0) scale(1.15); }
+}
+
+@keyframes boutique-shimmer {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1050px) {
+  .boutique-footer-main {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 30px;
+  }
+
+  .boutique-footer-contact {
+    grid-column: 1 / -1;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 750px) {
+  .boutique-footer-cta {
+    padding: 30px 0;
+  }
+
+  .boutique-footer-cta-content {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .boutique-footer-cta h2 {
+    font-size: clamp(30px, 7vw, 42px);
+  }
+
+  .boutique-footer-main {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 20px;
+    padding: 32px 0;
+  }
+
+  .boutique-footer-brand,
+  .boutique-footer-contact {
+    grid-column: 1 / -1;
+  }
+
+  .boutique-footer-bottom {
+    flex-wrap: wrap;
+  }
+
+  .boutique-footer-signature {
+    width: 100%;
+    order: 3;
+  }
+
+  .boutique-footer-top {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .boutique-footer-eyebrow span:last-child {
+    display: none;
+  }
+
+  .boutique-footer-cta h2 {
+    font-size: 34px;
+    letter-spacing: -1px;
+  }
+
+  .boutique-footer-cta-button {
+    width: 100%;
+  }
+
+  .boutique-footer-main {
+    gap: 25px 15px;
+  }
+
+  .boutique-footer-column h3 {
+    margin-bottom: 14px;
+  }
+
+  .boutique-footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .boutique-footer-top {
+    margin-left: 0;
+    order: 4;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .boutique-footer::before,
+  .boutique-footer-cta h2 em {
+    animation: none !important;
+  }
+
+  .boutique-footer *,
+  .boutique-footer *::before,
+  .boutique-footer *::after {
+    transition: none !important;
+  }
+
+  /* Show everything immediately instead of fading in */
+  .boutique-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

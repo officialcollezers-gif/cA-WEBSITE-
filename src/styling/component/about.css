@@ -1,0 +1,593 @@
+/* =========================================
+   BOUTIQUE ABOUT / OUR APPROACH
+========================================= */
+
+.boutique-about {
+  --ink: #0f3a33;
+  --ink-soft: #4f655e;
+  --teal: #0c8575;
+  --teal-bright: #19b49e;
+  --mint: #e8f3ef;
+  --paper: #f7f9f6;
+  --line: #d9e3dd;
+  --brass: #b8955a;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  overflow: hidden;
+  padding: 100px 0 110px;
+  background:
+    radial-gradient(900px 420px at 92% -8%, rgba(12, 133, 117, 0.09), transparent 70%),
+    radial-gradient(700px 360px at -6% 100%, rgba(184, 149, 90, 0.08), transparent 70%),
+    var(--paper);
+  color: var(--ink);
+}
+
+.boutique-about-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- ENTRANCE (single staggered sequence) ---------- */
+
+.boutique-about [data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+.boutique-about.is-visible [data-reveal] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.8s var(--ease),
+    transform 0.8s var(--ease);
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+
+/* ---------- SECTION HEADING ---------- */
+
+.boutique-about-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.boutique-about-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.boutique-about-label-line {
+  width: 27px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--teal), var(--brass));
+}
+
+.boutique-about-side-note {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+/* ---------- INTRODUCTION ---------- */
+
+.boutique-about-intro {
+  display: grid;
+  grid-template-columns: 1.15fr 0.65fr;
+  align-items: end;
+  gap: 60px;
+  padding: 60px 0 70px;
+}
+
+.boutique-about-title {
+  color: var(--ink);
+  font-family: "DM Sans", sans-serif;
+  font-size: clamp(39px, 4.5vw, 64px);
+  font-weight: 500;
+  letter-spacing: -2.8px;
+  line-height: 1.12;
+}
+
+.boutique-about-title em {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+  background: linear-gradient(100deg, var(--teal) 10%, var(--teal-bright) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--teal);
+  font-family: "Instrument Serif", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -1px;
+}
+
+/* underline that draws itself once, after the headline lands */
+.boutique-about-title em::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--brass));
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.boutique-about.is-visible .boutique-about-title em::after {
+  transform: scaleX(1);
+  transition: transform 1.1s var(--ease) 0.7s;
+}
+
+.boutique-about-intro-copy {
+  max-width: 390px;
+  padding-bottom: 5px;
+}
+
+.boutique-about-intro-copy > p {
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.boutique-about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 26px;
+  padding: 6px 6px 6px 22px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s var(--ease);
+}
+
+.boutique-about-link-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--teal);
+  overflow: hidden;
+}
+
+.boutique-about-link-icon svg {
+  transition: transform 0.35s var(--ease);
+}
+
+.boutique-about-link:hover {
+  background: var(--teal);
+  box-shadow: 0 10px 24px -10px rgba(12, 133, 117, 0.6);
+  transform: translateY(-2px);
+}
+
+.boutique-about-link:hover .boutique-about-link-icon {
+  background: #ffffff;
+  color: var(--teal);
+}
+
+.boutique-about-link:hover .boutique-about-link-icon svg {
+  transform: translate(2px, -2px);
+}
+
+.boutique-about-link:focus-visible,
+.boutique-about-card:focus-within {
+  outline: 2px solid var(--teal-bright);
+  outline-offset: 3px;
+}
+
+/* ---------- PRINCIPLE CARDS ---------- */
+
+.boutique-about-principles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.boutique-about-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 275px;
+  padding: 28px 28px 30px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #ffffff;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* hover fill rises from the bottom */
+.boutique-about-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(160deg, #0f3a33 0%, #0b6a5d 100%);
+  transform: translateY(101%);
+  transition: transform 0.55s var(--ease);
+}
+
+.boutique-about-card:hover::before {
+  transform: translateY(0);
+}
+
+/* card transitions are set after the entrance finishes */
+.boutique-about.is-visible .boutique-about-card {
+  transition:
+    opacity 0.8s var(--ease),
+    transform 0.8s var(--ease),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+  transition-delay: calc(var(--i, 0) * 110ms), calc(var(--i, 0) * 110ms), 0s, 0s;
+}
+
+.boutique-about.is-visible .boutique-about-card:hover {
+  border-color: transparent;
+  box-shadow: 0 24px 40px -22px rgba(15, 58, 51, 0.55);
+  transform: translateY(-6px);
+  transition-delay: 0s;
+}
+
+.boutique-about-card-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.boutique-about-number {
+  color: var(--brass);
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 26px;
+  line-height: 1;
+  transition: color 0.4s ease;
+}
+
+.boutique-about-icon-wrap {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--mint);
+  color: var(--teal);
+  transition:
+    background 0.4s ease,
+    color 0.4s ease,
+    transform 0.5s var(--ease);
+}
+
+.boutique-about-card:hover .boutique-about-icon-wrap {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  transform: rotate(-8deg) scale(1.06);
+}
+
+.boutique-about-card h3 {
+  margin-top: 36px;
+  color: var(--ink);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  transition: color 0.4s ease;
+}
+
+.boutique-about-card > p {
+  max-width: 320px;
+  margin-top: 12px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.75;
+  transition: color 0.4s ease;
+}
+
+.boutique-about-card-rule {
+  width: 28px;
+  height: 3px;
+  margin-top: auto;
+  border-radius: 3px;
+  background: var(--line);
+  transition:
+    width 0.5s var(--ease),
+    background 0.4s ease;
+}
+
+.boutique-about-card:hover .boutique-about-card-rule {
+  width: 64px;
+  background: var(--brass);
+}
+
+.boutique-about-card:hover h3 {
+  color: #ffffff;
+}
+
+.boutique-about-card:hover > p {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.boutique-about-card:hover .boutique-about-number {
+  color: #e2c48a;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 900px) {
+  .boutique-about {
+    padding: 75px 0 85px;
+  }
+
+  .boutique-about-intro {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 45px 0 48px;
+  }
+
+  .boutique-about-intro-copy {
+    max-width: 540px;
+  }
+
+  .boutique-about-principles {
+    gap: 14px;
+  }
+
+  .boutique-about-card {
+    padding: 24px 22px 26px;
+  }
+
+  .boutique-about-card h3 {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .boutique-about {
+    padding: 58px 0 64px;
+  }
+
+  .boutique-about-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .boutique-about-intro {
+    padding: 36px 0 40px;
+  }
+
+  .boutique-about-title {
+    font-size: clamp(37px, 9vw, 48px);
+    letter-spacing: -1.8px;
+  }
+
+  .boutique-about-intro-copy > p {
+    font-size: 14px;
+  }
+
+  .boutique-about-principles {
+    grid-template-columns: 1fr;
+  }
+
+  .boutique-about-card {
+    min-height: auto;
+  }
+
+  .boutique-about-card h3 {
+    margin-top: 24px;
+  }
+
+  .boutique-about-card > p {
+    max-width: 420px;
+    margin-bottom: 20px;
+  }
+
+  .boutique-about-card-rule {
+    margin-top: 0;
+  }
+}
+
+/* touch devices: no hover fill, keep it clean */
+@media (hover: none) {
+  .boutique-about-card::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boutique-about [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .boutique-about *,
+  .boutique-about *::before,
+  .boutique-about *::after {
+    transition: none !important;
+  }
+
+  .boutique-about-title em::after {
+    transform: scaleX(1);
+  }
+}
+/* =========================================
+   COMPACT ABOUT / OUR APPROACH SECTION
+   Add at the end of about.css
+========================================= */
+
+.boutique-about {
+  padding: 58px 0 64px;
+}
+
+/* Compact section label */
+.boutique-about-heading {
+  padding-bottom: 16px;
+}
+
+/* Reduce heading and intro spacing */
+.boutique-about-intro {
+  gap: 36px;
+  padding: 36px 0 38px;
+}
+
+.boutique-about-title {
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1.08;
+}
+
+.boutique-about-intro-copy > p {
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.boutique-about-link {
+  margin-top: 18px;
+}
+
+/* Shorter principle cards */
+.boutique-about-principles {
+  gap: 16px;
+}
+
+.boutique-about-card {
+  min-height: 225px;
+  padding: 22px 23px 24px;
+  border-radius: 14px;
+}
+
+.boutique-about-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.boutique-about-number {
+  font-size: 23px;
+}
+
+.boutique-about-card h3 {
+  margin-top: 24px;
+  font-size: 19px;
+}
+
+.boutique-about-card > p {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .boutique-about {
+    padding: 48px 0 54px;
+  }
+
+  .boutique-about-intro {
+    gap: 20px;
+    padding: 30px 0 32px;
+  }
+
+  .boutique-about-principles {
+    gap: 12px;
+  }
+
+  .boutique-about-card {
+    min-height: 205px;
+    padding: 20px 18px 22px;
+  }
+
+  .boutique-about-card h3 {
+    margin-top: 22px;
+    font-size: 17px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .boutique-about {
+    padding: 38px 0 42px;
+  }
+
+  .boutique-about-heading {
+    padding-bottom: 14px;
+  }
+
+  .boutique-about-intro {
+    gap: 16px;
+    padding: 26px 0 28px;
+  }
+
+  .boutique-about-title {
+    font-size: clamp(34px, 8vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+  }
+
+  .boutique-about-intro-copy > p {
+    font-size: 13px;
+    line-height: 1.75;
+  }
+
+  .boutique-about-link {
+    margin-top: 15px;
+  }
+
+  .boutique-about-principles {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .boutique-about-card {
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .boutique-about-card h3 {
+    margin-top: 18px;
+    font-size: 18px;
+  }
+
+  .boutique-about-card > p {
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+
+  .boutique-about-card-rule {
+    margin-top: 0;
+  }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .boutique-about [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .boutique-about *,
+  .boutique-about *::before,
+  .boutique-about *::after {
+    transition: none !important;
+  }
+
+  .boutique-about-title em::after {
+    transform: scaleX(1);
+  }
+}

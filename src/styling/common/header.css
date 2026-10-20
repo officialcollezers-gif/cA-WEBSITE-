@@ -1,0 +1,455 @@
+/* ============================================
+   PREMIUM ANIMATED HEADER
+============================================ */
+
+.premium-header {
+  --ph-bg-1: #064e49;
+  --ph-bg-2: #075e58;
+  --ph-bg-3: #087f76;
+  --ph-text: #e4fbf7;
+  --ph-text-muted: #e0f5f0;
+  --ph-icon: #a8f4df;
+  --ph-accent: #9af0ca;
+  --ph-border: rgba(255, 255, 255, 0.2);
+  --ph-ticker-duration: 36s;
+  --ph-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  z-index: 1001;
+  width: 100%;
+  min-height: 48px;
+  color: #ffffff;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(110deg, var(--ph-bg-1) 0%, var(--ph-bg-2) 45%, var(--ph-bg-3) 100%);
+  background-size: 200% 100%;
+  animation:
+    premium-header-enter 0.65s var(--ph-ease) both,
+    premium-header-gradient 18s ease-in-out 0.65s infinite alternate;
+}
+
+/* Bottom hairline */
+.premium-header::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  pointer-events: none;
+}
+
+/* Soft light sweep that passes across the header */
+.premium-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 30%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+  transform: translate3d(-120%, 0, 0);
+  animation: premium-sweep 9s ease-in-out 1.5s infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.premium-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 48px;
+}
+
+.premium-header a:focus-visible,
+.premium-header button:focus-visible {
+  outline: 2px solid var(--ph-accent);
+  outline-offset: -2px;
+  border-radius: 6px;
+}
+
+/* ============================================
+   LEFT BRAND INDICATOR
+============================================ */
+
+.premium-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  padding-right: 20px;
+  border-right: 1px solid var(--ph-border);
+}
+
+.premium-header-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  white-space: nowrap;
+}
+
+.premium-live-indicator {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+}
+
+.premium-live-indicator::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: rgba(142, 242, 197, 0.3);
+  border-radius: 50%;
+  animation: premium-pulse 2.2s ease-out infinite;
+}
+
+.premium-live-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  background: var(--ph-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 9px rgba(154, 240, 202, 0.65);
+}
+
+/* ============================================
+   MOVING ANNOUNCEMENT TICKER
+============================================ */
+
+.premium-ticker {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+
+.premium-ticker-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: premium-marquee var(--ph-ticker-duration) linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Pause on hover / keyboard focus (CSS only) or via the toggle button */
+.premium-ticker:hover .premium-ticker-track,
+.premium-ticker:focus-within .premium-ticker-track,
+.premium-ticker-track.is-paused {
+  animation-play-state: paused;
+}
+
+.premium-ticker-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.premium-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 10px;
+  padding: 0 25px;
+  color: var(--ph-text);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15px;
+  white-space: nowrap;
+}
+
+.premium-ticker-item svg {
+  color: var(--ph-icon);
+  flex-shrink: 0;
+}
+
+.premium-ticker-separator {
+  width: 4px;
+  height: 4px;
+  margin-left: 10px;
+  border-radius: 50%;
+  background: #8bd8cb;
+}
+
+/* Pause / play button */
+.premium-ticker-toggle {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ph-text);
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s var(--ph-ease);
+}
+
+.premium-ticker-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.08);
+}
+
+.premium-ticker-toggle:active {
+  transform: scale(0.94);
+}
+
+/* ============================================
+   RIGHT CONTACT ACTIONS
+============================================ */
+
+.premium-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.premium-header-hours,
+.premium-header-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ph-text-muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.premium-header-hours svg,
+.premium-header-email svg {
+  color: #a8eadd;
+}
+
+.premium-header-email {
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.premium-header-email:hover {
+  color: #ffffff;
+}
+
+.premium-header-phone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s var(--ph-ease),
+    box-shadow 0.25s ease;
+}
+
+.premium-header-phone:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.premium-header-phone:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.premium-header-phone-arrow {
+  transition: transform 0.25s var(--ph-ease);
+}
+
+.premium-header-phone:hover .premium-header-phone-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* ============================================
+   ANIMATIONS
+============================================ */
+
+@keyframes premium-header-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes premium-header-gradient {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+
+@keyframes premium-sweep {
+  0%, 60% { transform: translate3d(-120%, 0, 0); }
+  100%    { transform: translate3d(450%, 0, 0); }
+}
+
+@keyframes premium-pulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.8;
+  }
+  70%, 100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* Track = two identical halves, so -50% loops seamlessly */
+@keyframes premium-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+
+@media (max-width: 1300px) {
+  .premium-header-hours {
+    display: none;
+  }
+
+  .premium-header-inner {
+    gap: 16px;
+  }
+
+  .premium-header-actions {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 1050px) {
+  .premium-header-label {
+    display: none;
+  }
+
+  .premium-header-brand {
+    padding-right: 12px;
+  }
+
+  .premium-header-email span {
+    display: none;
+  }
+
+  .premium-header-email {
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+@media (max-width: 650px) {
+  .premium-header,
+  .premium-header-inner {
+    min-height: 42px;
+  }
+
+  .premium-header-inner {
+    gap: 8px;
+  }
+
+  .premium-header-brand {
+    display: none;
+  }
+
+  .premium-header-actions {
+    gap: 7px;
+  }
+
+  .premium-header-email {
+    width: 30px;
+    height: 30px;
+  }
+
+  .premium-header-phone {
+    padding: 7px 9px;
+    font-size: 10px;
+    gap: 5px;
+  }
+
+  .premium-header-phone-arrow {
+    display: none;
+  }
+
+  .premium-ticker-item {
+    font-size: 10px;
+    padding: 0 18px;
+  }
+
+  /* Slightly faster on small screens, where less text is visible */
+  .premium-header {
+    --ph-ticker-duration: 28s;
+  }
+}
+
+@media (max-width: 390px) {
+  .premium-header-phone span {
+    display: none;
+  }
+
+  .premium-header-phone {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+  }
+
+  .premium-ticker-toggle {
+    display: none;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .premium-header,
+  .premium-header::before,
+  .premium-live-indicator::before,
+  .premium-ticker-track {
+    animation: none !important;
+  }
+
+  .premium-header-phone,
+  .premium-header-phone-arrow,
+  .premium-ticker-toggle {
+    transition: none !important;
+  }
+
+  /* Static ticker: let people scroll it manually instead of clipping text */
+  .premium-ticker {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .premium-ticker::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Second half is only needed for looping */
+  .premium-ticker-group[aria-hidden="true"],
+  .premium-ticker-toggle {
+    display: none;
+  }
+}
