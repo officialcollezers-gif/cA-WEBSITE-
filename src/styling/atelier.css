@@ -95,3 +95,24 @@
 .public-site .boutique-hero-core { font-size: 30px; letter-spacing: -2px; }
 .public-site .boutique-loader-wordmark { max-width: 95vw; font-size: clamp(14px,3vw,25px); }
 .public-site .contact-cta-footer-mark { color: #dcc48e; }
+/* Light sections need dark foregrounds as well as light surfaces. */
+.public-site :is(.boutique-services,.testimonials-section) { color: #123c32; --t-line:#ded6c5; --t-teal-bright:#896825; --t-brass:#896825; --teal-bright:#896825; }
+.public-site :is(.boutique-services-intro h2,.testimonials-intro h2,.testimonial-author-info h3,.testimonial-quote) { color: #123c32; }
+.public-site :is(.boutique-services-heading-note,.boutique-services-intro>p,.boutique-services-bottom>p,.testimonials-note,.testimonials-intro>p,.testimonial-author-info p,.testimonials-disclaimer) { color: #52645b; }
+.public-site :is(.boutique-services-intro h2 em,.testimonials-intro h2 em) { background:none; -webkit-text-fill-color:currentColor; color:#896825; }
+.public-site :is(.boutique-services-eyebrow,.testimonials-eyebrow) { color:#896825; }
+.public-site .testimonial-avatar { background:#e9dfc7; color:#123c32; }
+.public-site .testimonial-quote-icon { color:#896825; }
+.public-site .testimonials-controls button { color:#123c32; border-color:#c6bca5; }
+.public-site :is(.boutique-services-bottom>span,.boutique-services-bottom a) { color:#52645b; }
+.public-site .boutique-services { --line-dark:#ded6c5; }
+.public-site .boutique-services-intro-copy p { color:#52645b; }
+.public-site :is(.boutique-services-eyebrow,.why-choose-us-eyebrow) { color:#785a1f; }
+.public-site :is(.services-page-cta-bottom,.service-category-hero-note,.blogs-meta,.blogs-count,.blogs-card-bottom>span) { color:#52645b; }
+/* The consultation panel was designed for a light surface. */
+.public-site .contact-cta { background:#f3eee2; --cc-teal:#785a1f; --cc-teal-bright:#785a1f; }
+.public-site :is(.boutique-about-title em,.service-categories-intro h2 em,.why-choose-us-heading h2 em,.contact-cta h2 em) { background:none; -webkit-text-fill-color:currentColor; color:#785a1f; }
+.public-site .contact-cta-footer-mark { color:#785a1f; }
+.public-site .contact-cta-footer-mark { display:grid; place-items:center; min-width:42px; height:36px; background:#123c32; color:#faf7ef; border-radius:10px; font-size:16px; letter-spacing:-1px; }
+
+.public-site .service-category-subtitle { color:#785a1f; }
