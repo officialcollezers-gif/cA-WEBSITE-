@@ -266,7 +266,6 @@ export default function SubServiceDetails() {
               </h3>
 
               <p>{service.overview || service.description}</p>
-              <RichContent html={service.contentHtml} />
 
               <p>
                 Our approach starts with understanding your circumstances,
@@ -280,6 +279,11 @@ export default function SubServiceDetails() {
               </a>
             </div>
           </div>
+          {service.contentHtml && (
+            <div className="ssd-service-article">
+              <RichContent html={service.contentHtml} />
+            </div>
+          )}
         </div>
       </section>
 
