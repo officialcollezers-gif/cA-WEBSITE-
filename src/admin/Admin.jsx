@@ -1,5 +1,5 @@
+const publicSite = import.meta.env.VITE_PUBLIC_SITE_URL || "/";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   LayoutDashboard,
   FileText,
@@ -482,7 +482,7 @@ export default function Admin() {
               {error}
             </p>
           )}
-          <Link to="/">← Back to website</Link>
+          <a href={publicSite}>← Back to website</a>
         </div>
         <div className="admin-login-art">
           <span>
@@ -498,10 +498,10 @@ export default function Admin() {
   return (
     <div className="admin-shell">
       <aside className="admin-sidebar">
-        <Link className="admin-brand" to="/">
+        <a className="admin-brand" href={publicSite}>
           fin<span>core.</span>
           <small>CONTENT STUDIO</small>
-        </Link>
+        </a>
         <nav aria-label="Admin navigation">
           {tabs.map(([id, label, Icon]) => (
             <button
@@ -519,9 +519,9 @@ export default function Admin() {
           ))}
         </nav>
         <div className="admin-sidebar-bottom">
-          <Link to="/" target="_blank" rel="noreferrer">
+          <a href={publicSite} target="_blank" rel="noreferrer">
             <ExternalLink size={16} /> View website
-          </Link>
+          </a>
           <small>{auth.user}</small>
           <button
             disabled={busy}

@@ -1,3 +1,4 @@
+import { apiUrl } from "../content/api";
 import Turnstile from "../content/Turnstile";
 import { useContent } from "../content/useContent";
 import { useEffect, useRef, useState } from "react";
@@ -176,7 +177,7 @@ export default function Contact() {
     if (!consent || !challengeToken) { setStatus({ text: 'Please agree to be contacted and complete the spam check.' }); return; }
     setBusy(true);
     try {
-      const response = await fetch('/api/enquiries', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...form, name: form.fullName, source: '/contact', consent, challengeToken }) });
+      const response = await fetch(apiUrl('/api/enquiries'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...form, name: form.fullName, source: '/contact', consent, challengeToken }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || 'Your enquiry could not be submitted.');
       setStatus({ text: 'Thank you. Your enquiry has been saved and our team will be in touch.' });

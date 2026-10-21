@@ -7,7 +7,7 @@ The Google Sheet stays private. Browser code never receives its credentials.
 ## 1. Give the server permission to use your Sheet
 
 The selected spreadsheet ID is already in `.env.example`:
-`1IFPwHwq65K-VrWgJ5iEWUhWfhXUOaINGfZ_kr3d8zp0`.
+`16xL2e0SeGBlLNrYYFS3J5HIcuwX8fHihoaavW-zqGUQ`.
 
 1. In Google Cloud Console, create or select a project.
 2. Enable **Google Sheets API** in that project.
@@ -67,7 +67,7 @@ Do not use test keys in production.
 Use Node.js 22.12+ (validated with Node 24) and npm.
 
 ```sh
-cd /workspace/Codex
+cd /workspace/ca-website-connected
 npm ci
 ```
 
@@ -186,3 +186,10 @@ Browser tests cover real public routes and admin editing using controlled API
 responses. These tests do not replace the live Google/Vercel checks in step 6.
 Playwright uses `/usr/bin/chromium` by default; set `CHROMIUM_PATH` to an installed
 Chromium executable on another machine. No browser download is needed here.
+
+## Separate frontend and admin links
+
+For two independent deployments, follow [DEPLOYMENT.md](DEPLOYMENT.md). It
+supersedes the single-deployment origin instructions above for that arrangement.
+The public frontend uses `VITE_API_BASE_URL` to reach the admin API;
+`PUBLIC_SITE_ORIGIN` allows only that frontend's public API calls.

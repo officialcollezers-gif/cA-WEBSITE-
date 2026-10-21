@@ -364,3 +364,23 @@ test("Google write failure is reported without claiming success", async () => {
   assert.ok(!assemble(store.Content).blogs.find((b) => b.id === "failing"));
   failWrites = false;
 });
+
+test('separate public origin can read content and preflight enquiry requests without admin cookies', async () => {
+  process.env.PUBLIC_SITE_ORIGIN = 'https://public.example.com';
+  const read = await call('/api/content', { origin: process.env.PUBLIC_SITE_ORIGIN });
+  assert.equal(read.status, 200);
+  assert.equal(read.headers.get('access-control-allow-origin'), process.env.PUBLIC_SITE_ORIGIN);
+  assert.equal(read.headers.get('access-control-allow-credentials'), null);
+  const preflight = await call('/api/enquiries', { method: 'OPTIONS', origin: process.env.PUBLIC_SITE_ORIGIN });
+  assert.equal(preflight.status, 204);
+  assert.equal(preflight.headers.get('access-control-allow-methods'), 'POST');
+  assert.equal((await call('/api/content', { origin: 'https://attacker.example' })).status, 403);
+  assert.equal((await call('/api/enquiries', { method: 'OPTIONS', origin: 'https://attacker.example' })).status, 403);
+  delete process.env.PUBLIC_SITE_ORIGIN;
+});
+test('public origin cannot use an admin session to write content', async () => {
+  process.env.PUBLIC_SITE_ORIGIN = 'https://public.example.com';
+  assert.equal((await call('/api/admin', { authorized: true, origin: process.env.PUBLIC_SITE_ORIGIN, data: { action: 'initialize' } })).status, 403);
+  assert.equal((await call('/api/auth', { origin: process.env.PUBLIC_SITE_ORIGIN, data: { credential: 'allowed' } })).status, 403);
+  delete process.env.PUBLIC_SITE_ORIGIN;
+});

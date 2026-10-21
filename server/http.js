@@ -7,6 +7,27 @@ export function sameOrigin(req) {
   if (req.headers.origin !== new URL(expected).origin)
     fail(403, "Request origin is not allowed.");
 }
+// Public content and enquiry APIs accept only the explicitly configured public
+// site origin. Admin/auth endpoints continue requiring APP_ORIGIN exclusively.
+export function publicCors(req, res, methods = ['GET']) {
+  const allowed = [process.env.PUBLIC_SITE_ORIGIN, process.env.APP_ORIGIN].filter(Boolean).map(v => new URL(v).origin);
+  const origin = req.headers.origin;
+  if (origin && !allowed.includes(origin)) fail(403, 'Request origin is not allowed.');
+  res.setHeader('Vary', 'Origin');
+  if (origin) res.setHeader('Access-Control-Allow-Origin', origin);
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Methods', methods.join(', '));
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Max-Age', '600');
+    res.statusCode = 204; res.end(); return true;
+  }
+  return false;
+}
+export function publicWriteOrigin(req) {
+  const expected = process.env.PUBLIC_SITE_ORIGIN || process.env.APP_ORIGIN;
+  if (!expected) fail(503, 'Public website origin is not configured.');
+  if (req.headers.origin !== new URL(expected).origin) fail(403, 'Request origin is not allowed.');
+}
 export async function body(req) {
   if (!/^application\/json(?:;|$)/i.test(req.headers["content-type"] || ""))
     fail(415, "Use application/json.");

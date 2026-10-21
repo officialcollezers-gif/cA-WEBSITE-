@@ -1,3 +1,4 @@
+import { apiUrl } from "../../content/api";
 import Turnstile from "../../content/Turnstile";
 
 import { useState } from "react";
@@ -17,7 +18,7 @@ export default function ServiceEnquiryForm({ category, service }) {
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
-  const endpoint = '/api/enquiries';
+  const endpoint = apiUrl('/api/enquiries');
   const [challengeToken, setChallengeToken] = useState('');
   const [resetKey, setResetKey] = useState(0);
 

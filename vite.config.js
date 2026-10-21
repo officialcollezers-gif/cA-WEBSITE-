@@ -42,6 +42,7 @@ export default defineConfig(({ mode }) => {
     "ADMIN_EMAILS",
     "SESSION_SECRET",
     "APP_ORIGIN",
+        "PUBLIC_SITE_ORIGIN",
     "TURNSTILE_SITE_KEY",
     "TURNSTILE_SECRET_KEY",
   ])

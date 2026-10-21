@@ -1,3 +1,4 @@
+import { apiUrl } from "./api";
 import { useEffect, useState } from "react";
 import { servicesData } from "../data/servicesData";
 import { blogsData } from "../data/blogsData";
@@ -26,7 +27,7 @@ export function ContentProvider({ children }) {
     const controller = new AbortController();
     async function refresh() {
       try {
-        const response = await fetch("/api/content", {
+        const response = await fetch(apiUrl("/api/content"), {
           signal: controller.signal,
         });
         if (!response.ok) throw new Error("Content could not be loaded.");

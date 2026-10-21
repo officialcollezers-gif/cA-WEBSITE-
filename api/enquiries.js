@@ -1,9 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { endpoint, body, sameOrigin, fail } from "../server/http.js";
+import { endpoint, body, publicCors, publicWriteOrigin, fail } from "../server/http.js";
 import { appendRows, configured, initialized } from "../server/google.js";
-export default endpoint(async (req) => {
+export default endpoint(async (req, res) => {
+  if (publicCors(req, res, ["POST"])) return;
   if (req.method !== "POST") fail(405, "Method not allowed.");
-  sameOrigin(req);
+  publicWriteOrigin(req);
   const data = await body(req);
   if (!data || typeof data !== "object") fail(400, "Invalid enquiry.");
   if (data.website) return { ok: true };
@@ -51,7 +52,7 @@ export default endpoint(async (req) => {
   const challenge = await response.json();
   if (
     !challenge.success ||
-    challenge.hostname !== new URL(process.env.APP_ORIGIN).hostname
+    challenge.hostname !== new URL(process.env.PUBLIC_SITE_ORIGIN || process.env.APP_ORIGIN).hostname
   )
     fail(400, "Please complete the spam protection check again.");
   if (!configured() || !(await initialized()))

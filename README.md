@@ -22,3 +22,7 @@ npm test
 npm run build
 npm run test:e2e
 ```
+
+For separate public frontend and admin links sharing one Google Sheet, use
+[DEPLOYMENT.md](DEPLOYMENT.md). Deploy the same source as two Vercel projects;
+keep Google credentials only on the admin project.

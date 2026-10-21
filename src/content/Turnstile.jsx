@@ -1,3 +1,4 @@
+import { apiUrl } from "./api";
 import { useEffect, useRef, useState } from "react";
 let loading;
 function loadWidget() {
@@ -28,7 +29,7 @@ export default function Turnstile({ onToken, resetKey = 0 }) {
     let active = true;
     let widget;
     let api;
-    fetch("/api/config")
+    fetch(apiUrl("/api/config"))
       .then((r) => {
         if (!r.ok) throw new Error("Spam protection is unavailable.");
         return r.json();
