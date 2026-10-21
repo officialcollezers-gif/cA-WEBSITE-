@@ -342,7 +342,7 @@ export default function Services() {
 
               <div className="services-page-image-caption">
 
-                <span>FinCore Advisory</span>
+                <span>RAHUL G & ASSOCIATES</span>
 
                 <ArrowUpRight
                   size={17}
@@ -455,7 +455,7 @@ export default function Services() {
           <div className="services-page-cta-bottom">
 
             <span>
-              FinCore Advisors · Accounting, taxation, advisory
+              RAHUL G & ASSOCIATES · Accounting, taxation, advisory
             </span>
 
             <span>

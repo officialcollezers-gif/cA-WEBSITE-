@@ -5,7 +5,7 @@ import { blogsData } from "../data/blogsData";
 import { Context } from "./context";
 const starter = {
   settings: {
-    name: "FinCore Advisors",
+    name: "RAHUL G & ASSOCIATES",
     email: "hello@example.com",
     phone: "+91 98765 43210",
     location: "Jaipur, Rajasthan, India",

@@ -1,6 +1,6 @@
 
 /*
-  FINCORE ADVISORS
+  RAHUL G & ASSOCIATES
   Central service data
 
   6 categories
@@ -81,7 +81,7 @@ function makeService(
     image,
     imageAlt: `${title} - professional financial advisory service`,
 
-    overview: `${description} At FinCore Advisors, we begin by understanding your requirements, reviewing the available information and identifying the appropriate scope of professional assistance.`,
+    overview: `${description} At RAHUL G & ASSOCIATES, we begin by understanding your requirements, reviewing the available information and identifying the appropriate scope of professional assistance.`,
 
     inclusions:
       inclusions.length > 0

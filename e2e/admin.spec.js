@@ -57,6 +57,11 @@ test("public routes render starter services, blogs and article details without r
     await expect(page.locator("main h1").first()).toBeVisible({
       timeout: 15000,
     });
+    if (path === "/") {
+      await expect(page.locator(".cms-category-grid > a")).toHaveCount(6);
+      await expect(page.getByText("Service category not found", { exact: true })).toHaveCount(0);
+      await expect(page.locator('.cms-category-grid a[href="/services/income-tax-advisory"]')).toContainText('Income Tax Advisory');
+    }
   }
   expect(errors).toEqual([]);
 });

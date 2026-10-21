@@ -1,4 +1,4 @@
-# FinCore Advisors
+# RAHUL G & ASSOCIATES
 
 React/Vite website with a Google Sheets content backend, password-authenticated
 admin at `/admin`, Vercel serverless APIs and protected enquiry forms.

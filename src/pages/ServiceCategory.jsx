@@ -93,7 +93,7 @@ export default function ServiceCategory() {
   }, [categorySlug]);
 
   useEffect(() => {
-    if (category) document.title = `${category.title} | FinCore Advisors`;
+    if (category) document.title = `${category.title} | RAHUL G & ASSOCIATES`;
   }, [category]);
 
   if (loading) return <main className="cms-page">Loading services…</main>;
@@ -173,7 +173,7 @@ export default function ServiceCategory() {
                 }}
               />
               <div className="service-category-image-overlay">
-                <span>FinCore Advisors</span>
+                <span>RAHUL G & ASSOCIATES</span>
                 <ArrowUpRight size={18} aria-hidden="true" />
               </div>
             </div>

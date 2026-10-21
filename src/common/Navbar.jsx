@@ -15,7 +15,7 @@ import "../styling/common/navbar.css";
 /* ---------- Static data ---------- */
 
 const DEFAULT_BRAND = {
-  name: "FinCore Advisors",
+  name: "RAHUL G & ASSOCIATES",
   tagline: "ACCOUNTING • TAXATION • ADVISORY",
 };
 

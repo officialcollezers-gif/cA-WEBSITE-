@@ -65,7 +65,7 @@ export default function About() {
         <div className="boutique-about-heading" data-reveal style={{ "--i": 0 }}>
           <div className="boutique-about-label">
             <span className="boutique-about-label-line" />
-            <span>02 / About Fincore</span>
+            <span>02 / About RAHUL G & ASSOCIATES</span>
           </div>
 
           <p className="boutique-about-side-note">

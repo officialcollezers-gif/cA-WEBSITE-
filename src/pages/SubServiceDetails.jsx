@@ -131,7 +131,7 @@ export default function SubServiceDetails() {
 
   useEffect(() => {
     if (!category || !service) return;
-    document.title = `${service.title} | ${category.title} | FinCore Advisors`;
+    document.title = `${service.title} | ${category.title} | RAHUL G & ASSOCIATES`;
   }, [category, service]);
 
   if (loading) return <main className="cms-page">Loading service…</main>;

@@ -424,7 +424,7 @@ export default function Contact() {
               <div className="contact-page-graphic-circle circle-one" />
               <div className="contact-page-graphic-circle circle-two" />
               <div className="contact-page-graphic-circle circle-three" />
-              <span>Fincore Advisory</span>
+              <span>RAHUL G & ASSOCIATES</span>
             </div>
           </aside>
         </div>

@@ -501,7 +501,7 @@ export default function Admin() {
     return (
       <main className="admin-login">
         <div className="admin-login-card">
-          <span className="admin-eyebrow">FINCORE / CONTENT STUDIO</span>
+          <span className="admin-eyebrow">RAHUL G & ASSOCIATES / CONTENT STUDIO</span>
           <h1>
             A little clarity.
             <br />
@@ -547,7 +547,7 @@ export default function Admin() {
     <div className="admin-shell">
       <aside className="admin-sidebar">
         <a className="admin-brand" href={publicSite}>
-          fin<span>core.</span>
+          RAHUL G & ASSOCIATES
           <small>CONTENT STUDIO</small>
         </a>
         <nav aria-label="Admin navigation">

@@ -15,8 +15,8 @@ import "../styling/common/footer.css";
 /* ---------- Static data ---------- */
 
 const DEFAULT_FOOTER_DATA = {
-  logo: "fincore",
-  company: "FinCore Advisors",
+  logo: "RAHUL G & ASSOCIATES",
+  company: "RAHUL G & ASSOCIATES",
   description:
     "Independent financial, taxation and business advisory services with a considered approach to every client relationship.",
   caption: "FINANCIAL CLARITY. CONSIDERED ADVICE.",

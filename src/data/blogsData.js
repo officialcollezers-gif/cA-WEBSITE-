@@ -9,7 +9,7 @@ export const blogsData = [
       "Understand the essentials of income tax return filing, documents to prepare and common mistakes to avoid.",
     image:
       "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=85",
-    author: "FinCore Editorial Team",
+    author: "RAHUL G & ASSOCIATES Editorial Team",
     date: "2026-10-10",
     readTime: "6 min read",
     featured: true,
@@ -46,7 +46,7 @@ export const blogsData = [
       "Learn when GST registration may be required and what businesses should prepare before applying.",
     image:
       "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=85",
-    author: "FinCore Editorial Team",
+    author: "RAHUL G & ASSOCIATES Editorial Team",
     date: "2026-10-08",
     readTime: "5 min read",
     sections: [
@@ -73,7 +73,7 @@ export const blogsData = [
       "Practical ways to organise financial records, reconcile transactions and improve visibility into business finances.",
     image:
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=85",
-    author: "FinCore Editorial Team",
+    author: "RAHUL G & ASSOCIATES Editorial Team",
     date: "2026-10-05",
     readTime: "7 min read",
     sections: [
@@ -100,7 +100,7 @@ export const blogsData = [
       "Explore important considerations before incorporating a private limited company in India.",
     image:
       "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=85",
-    author: "FinCore Editorial Team",
+    author: "RAHUL G & ASSOCIATES Editorial Team",
     date: "2026-10-02",
     readTime: "6 min read",
     sections: [
@@ -127,7 +127,7 @@ export const blogsData = [
       "Build a structured approach to statutory filings, recordkeeping and recurring compliance responsibilities.",
     image:
       "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1200&q=85",
-    author: "FinCore Editorial Team",
+    author: "RAHUL G & ASSOCIATES Editorial Team",
     date: "2026-09-28",
     readTime: "5 min read",
     sections: [
@@ -154,7 +154,7 @@ export const blogsData = [
       "Learn how cash flow planning and regular financial reviews can support informed business decisions.",
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=85",
-    author: "FinCore Editorial Team",
+    author: "RAHUL G & ASSOCIATES Editorial Team",
     date: "2026-09-25",
     readTime: "8 min read",
     sections: [

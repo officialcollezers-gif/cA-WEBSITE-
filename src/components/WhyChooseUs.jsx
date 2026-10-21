@@ -77,7 +77,7 @@ export default function WhyChooseUs() {
         <div className="why-choose-us-top" data-reveal style={{ "--i": 0 }}>
           <div className="why-choose-us-eyebrow">
             <span className="why-choose-us-eyebrow-line" />
-            <span>05 / The Fincore approach</span>
+            <span>05 / The RAHUL G & ASSOCIATES approach</span>
           </div>
 
           <span className="why-choose-us-note">

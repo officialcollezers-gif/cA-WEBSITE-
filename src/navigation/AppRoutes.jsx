@@ -47,7 +47,7 @@ function ComingSoon({ title, description }) {
           marginBottom: "15px",
         }}
       >
-        FINCORE ADVISORS
+        RAHUL G & ASSOCIATES
       </span>
 
       <h1

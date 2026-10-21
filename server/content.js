@@ -1,12 +1,14 @@
-import bundledSanitizer from "./generated/sanitizer.cjs";
-const sanitizeHtml = bundledSanitizer.default;
+import { rebrandLegacyContent } from "./branding.js";
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+const sanitizeHtml = require("./generated/sanitizer.cjs").default;
 import { servicesData } from "../src/data/servicesData.js";
 import { blogsData } from "../src/data/blogsData.js";
 
 export const defaults = {
   settings: {
     id: "site",
-    name: "FinCore Advisors",
+    name: "RAHUL G & ASSOCIATES",
     email: "hello@example.com",
     phone: "+91 98765 43210",
     location: "Jaipur, Rajasthan, India",
@@ -176,7 +178,7 @@ export function assemble(rows, publicOnly = false) {
   for (const [kind, id, json] of rows) {
     if (!["settings", "categories", "blogs", "pages"].includes(kind)) continue;
     try {
-      records.set(`${kind}:${id}`, { kind, value: JSON.parse(json) });
+      records.set(`${kind}:${id}`, { kind, value: rebrandLegacyContent(JSON.parse(json)) });
     } catch {
       throw new Error("Invalid content row in Google Sheets.");
     }

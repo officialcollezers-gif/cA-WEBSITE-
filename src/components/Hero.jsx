@@ -250,7 +250,7 @@ export default function Hero() {
             aria-hidden="true"
           >
             <div className="boutique-hero-visual-top">
-              <span>FINCORE / ADVISORY</span>
+              <span>RAHUL G & ASSOCIATES / ADVISORY</span>
               <span>{String(SERVICES.length).padStart(2, "0")} SERVICES</span>
             </div>
 

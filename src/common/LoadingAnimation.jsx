@@ -4,7 +4,7 @@ import "../styling/common/loadingAnimation.css";
 
 /* ---------- Config ---------- */
 
-const WORDMARK_LETTERS = "fincore".split("");
+const WORDMARK_LETTERS = "RAHUL G & ASSOCIATES".split("");
 const CAPTION = "FINANCIAL CLARITY. CONSIDERED ADVICE.";
 
 // The first-visit intro (letters, dot, caption) needs ~950ms to play out.
@@ -153,7 +153,7 @@ export default function LoadingAnimation({
               className="boutique-loader-letter"
               style={{ "--i": index }}
             >
-              {letter}
+              {letter === " " ? "\u00a0" : letter}
             </span>
           ))}
           <span
