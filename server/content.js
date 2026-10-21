@@ -48,8 +48,17 @@ export const defaults = {
 };
 export const html = (value) =>
   sanitizeHtml(value || "", {
-    allowedTags: [...sanitizeHtml.defaults.allowedTags, "img"],
+    allowedTags: [...sanitizeHtml.defaults.allowedTags, "img", "details", "summary"],
+    allowedStyles: {
+      "*": Object.fromEntries(
+        ("color background background-color background-image font-family font-size font-weight font-style line-height letter-spacing text-align text-decoration text-transform margin margin-top margin-bottom margin-left margin-right padding padding-top padding-bottom padding-left padding-right border border-top border-bottom border-left border-right border-color border-radius border-collapse box-shadow display flex flex-wrap flex-direction flex-shrink flex-grow flex-basis align-items justify-content gap row-gap column-gap grid-template-columns width max-width min-width height max-height min-height overflow overflow-x overflow-y opacity cursor vertical-align list-style list-style-type word-break overflow-wrap box-sizing").split(" ").map((property) => [property, [/^(?!.*(?:url|expression|javascript|@|\\|[<>])).{1,300}$/i]])
+      ),
+    },
     allowedAttributes: {
+      "*": ["style"],
+      details: ["open"],
+      th: ["scope", "colspan", "rowspan"],
+      td: ["colspan", "rowspan"],
       a: ["href", "title", "target", "rel"],
       img: ["src", "alt", "width", "height"],
     },
