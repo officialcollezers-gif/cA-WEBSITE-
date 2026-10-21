@@ -18,6 +18,6 @@ function Site() {
     if (import.meta.env.VITE_APP_MODE === 'public') return <main className="cms-page"><h1>Administration</h1>{import.meta.env.VITE_ADMIN_URL ? <a href={import.meta.env.VITE_ADMIN_URL}>Open the admin panel</a> : <p>The admin panel is hosted separately.</p>}</main>;
     return <Admin />;
   }
-  return <><LoadingAnimation initialDuration={1100} routeDuration={450} /><Header /><Navbar />{error && <p className="cms-notice" role="status">{error}</p>}<AppRoutes /><Footer /><ScrollToTop /></>;
+  return <div className="public-site"><LoadingAnimation initialDuration={850} routeDuration={220} /><Header /><Navbar />{error && <p className="cms-notice" role="status">{error}</p>}<AppRoutes /><Footer /><ScrollToTop /></div>;
 }
 export default function App() { return <BrowserRouter><ContentProvider><Site /></ContentProvider></BrowserRouter>; }

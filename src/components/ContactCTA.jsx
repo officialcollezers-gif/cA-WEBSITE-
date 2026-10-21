@@ -196,7 +196,7 @@ export default function ContactCTA() {
             data-reveal
             style={{ "--i": 6 }}
           >
-            <span className="contact-cta-footer-mark">f.</span>
+            <span className="contact-cta-footer-mark">RG.</span>
             <p>Professional guidance begins with understanding your needs.</p>
           </div>
         </aside>

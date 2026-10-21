@@ -4,10 +4,10 @@
 
 .boutique-scroll-top {
   --st-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --st-accent: #a9d8c9;
-  --st-track: #dfe5df;
-  --st-bg: #183d37;
-  --st-bg-hover: #0c8575;
+  --st-accent: #dcc48e;
+  --st-track: #e4ddce;
+  --st-bg: #123c32;
+  --st-bg-hover: #896825;
 
   position: fixed;
   right: max(28px, env(safe-area-inset-right));

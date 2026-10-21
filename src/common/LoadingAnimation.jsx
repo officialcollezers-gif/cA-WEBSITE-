@@ -7,15 +7,15 @@ import "../styling/common/loadingAnimation.css";
 const WORDMARK_LETTERS = "RAHUL G & ASSOCIATES".split("");
 const CAPTION = "FINANCIAL CLARITY. CONSIDERED ADVICE.";
 
-// The first-visit intro (letters, dot, caption) needs ~950ms to play out.
+// Keep the first-visit monogram and wordmark visible briefly.
 // The loader never exits before that, whatever initialDuration is passed in.
-const INTRO_DURATION = 1000;
+const INTRO_DURATION = 800;
 
-// First visit gets a "curtain" exit, route changes a quick fade
-const EXIT_DURATION = { initial: 600, route: 350 };
+// First visit fades out; navigation uses a non-blocking progress line.
+const EXIT_DURATION = { initial: 400, route: 180 };
 
 // Never keep a first-time visitor waiting longer than this for fonts/assets
-const MAX_INITIAL_WAIT = 4000;
+const MAX_INITIAL_WAIT = 2500;
 
 /* ---------- Helpers ---------- */
 
@@ -115,7 +115,7 @@ export default function LoadingAnimation({
   /* Block page scroll while the loader covers the screen */
   const covering = loader.phase !== "hidden";
   useEffect(() => {
-    if (!covering) return undefined;
+    if (!covering || !loader.initial) return undefined;
 
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -123,7 +123,7 @@ export default function LoadingAnimation({
     return () => {
       document.body.style.overflow = previous;
     };
-  }, [covering]);
+  }, [covering, loader.initial]);
 
   if (!covering) return null;
 
@@ -146,6 +146,10 @@ export default function LoadingAnimation({
       aria-hidden="true"
     >
       <div className="boutique-loader-content">
+        <div className="atelier-loader-emblem" aria-hidden="true">
+          <span className="atelier-loader-orbit" />
+          <span className="atelier-loader-monogram">RG<span>ASSOCIATES</span></span>
+        </div>
         <div className="boutique-loader-wordmark">
           {WORDMARK_LETTERS.map((letter, index) => (
             <span

@@ -239,7 +239,7 @@
   flex-shrink: 0;
   place-items: center;
   border-radius: 50%;
-  background: linear-gradient(145deg, var(--t-teal-bright), #0c8575);
+  background: linear-gradient(145deg, var(--t-teal-bright), #896825);
   color: var(--t-ink-deep);
   font-size: 12px;
   font-weight: 700;

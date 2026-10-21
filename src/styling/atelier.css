@@ -1,0 +1,97 @@
+/* Emerald / cream / gold: public website design layer. */
+.public-site {
+  --primary: #123c32;
+  --primary-dark: #082a23;
+  --primary-light: #f0eadc;
+  --accent: #896825;
+  --background: #faf7ef;
+  --border: #e4ddce;
+  --muted: #66716a;
+  color: var(--primary);
+  background: var(--background);
+}
+.public-site main { min-height: 50vh; }
+.public-site :is(h1,h2) { letter-spacing: -.035em; }
+.public-site :is(input,textarea,select) {
+  border-radius: 12px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.public-site :is(input,textarea,select):focus {
+  border-color: #896825;
+  outline: 2px solid #89682540;
+  outline-offset: 2px;
+}
+.public-site .premium-header { background: #0c3028; color: #f5edda; }
+.public-site .premium-header-label { letter-spacing: .16em; }
+.public-site .modern-navbar { background: #fffdf7f5; border-bottom-color: #e4ddce; }
+.public-site .modern-navbar.is-scrolled { background: #fffdf7ed; box-shadow: 0 8px 30px #123c320b; }
+.public-site .modern-brand-icon { background: linear-gradient(140deg,#245447,#0c3028); box-shadow: 0 5px 15px #123c3218; border-radius: 16px; }
+.public-site .modern-brand-text strong { letter-spacing: -.04em; }
+.public-site .modern-scroll-progress { background: linear-gradient(90deg,#896825,#dcc48e); height: 2px; }
+.public-site .boutique-hero {
+  background: radial-gradient(ellipse at 85% 15%,#e7dfc6 0,transparent 55%),#faf7ef;
+}
+.public-site .boutique-hero::after { background: radial-gradient(circle,#c9aa661c,transparent 65%); animation-duration: 22s; }
+.public-site .boutique-hero-title { letter-spacing: -.055em; }
+.public-site .boutique-hero-primary { border-radius: 12px; box-shadow: 0 8px 22px #123c3218; }
+.public-site .boutique-hero-core { box-shadow: 0 24px 70px #123c321a; border-color: #cfb477; }
+.public-site .boutique-hero-tile { border-radius: 14px; background: #fffdf6; }
+.public-site :is(.boutique-about,.service-categories,.testimonials-section) { background: #faf7ef; }
+.public-site :is(.boutique-services,.why-choose-us) { background: #f3eee2; }
+.public-site :is(.boutique-about-card,.boutique-service-card,.testimonial-card,.blogs-card,.blogs-featured-card,.cms-category-grid>a) {
+  border: 1px solid #e4ddce;
+  border-radius: 20px;
+  background: #fffdf8;
+  box-shadow: 0 4px 12px #123c3204;
+  transition: transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .3s;
+}
+@media (hover:hover) {
+  .public-site :is(.boutique-about-card,.boutique-service-card,.testimonial-card,.blogs-card,.cms-category-grid>a):hover {
+    transform: translateY(-5px);
+    border-color: #b99b61;
+    box-shadow: 0 16px 36px #123c320c;
+  }
+}
+.public-site .boutique-service-card { overflow: hidden; }
+.public-site .cms-category-grid { gap: 18px; }
+.public-site .cms-category-grid>a { padding: 28px; }
+.public-site .cms-category-grid h3 { font-family: var(--font-serif); font-size: 29px; font-weight: 400; }
+.public-site .cms-category-grid span { color: #896825; letter-spacing: .1em; }
+.public-site :is(.blogs-hero,.services-page-hero,.contact-page-hero) {
+  background: radial-gradient(ellipse at 100% 0,#e9dfc7,transparent 65%),#faf7ef;
+}
+.public-site .blogs-card-image { overflow: hidden; border-radius: 19px 19px 0 0; }
+.public-site .blogs-card-image img { transition: transform .6s cubic-bezier(.22,1,.36,1); }
+.public-site .blogs-card:hover .blogs-card-image img { transform: scale(1.035); }
+.public-site .blogs-filters button { border-radius: 999px; }
+.public-site .blogs-filters button.active { background: #123c32; color: #fffdf6; border-color: #123c32; }
+.public-site .ssd-html-header { background: linear-gradient(135deg,#faf7ef,#f0eadc); border-bottom: 1px solid #e4ddce; margin-bottom: 32px; }
+.public-site .ssd-managed-image { box-shadow: 0 12px 28px #123c3212; border: 1px solid #ded3bc; }
+.public-site .ssd-managed-overview-inner { border-color: #e4ddce; }
+.public-site .ssd-managed-overview h2 { color: #896825; }
+.public-site .rich-content { color: #173e34; }
+.public-site .rich-content a { color: #785a1f; }
+.public-site .rich-content th { background-color: #f0eadc; }
+.public-site .cms-page { color: #123c32; }
+.public-site :is(.contact-cta,.boutique-footer) { background: #0c3028; }
+.public-site .boutique-footer { --bf-bg:#0c3028; --bf-text:#faf7ef; --bf-accent:#dcc48e; --bf-muted:#c5cdc3; --bf-faint:#bcc5b9; }
+.public-site .boutique-footer::before { background: radial-gradient(circle,#cfad6820,transparent 65%); }
+.public-site .boutique-footer-cta-button { border-radius: 12px; border-color: #dcc48e; }
+.public-site .contact-cta-primary { border-radius: 12px; }
+.public-site .boutique-footer-logo { letter-spacing: -.04em; }
+/* Animate route content once; inline authored content retains its own styling. */
+@media (prefers-reduced-motion:no-preference) {
+  .public-site main { animation: atelier-page-enter .5s cubic-bezier(.22,1,.36,1) both; }
+}
+@keyframes atelier-page-enter { from { opacity:.4; translate:0 10px; } to { opacity:1; translate:0 0; } }
+@media (max-width:600px) {
+  .public-site .cms-category-grid>a { padding:22px; }
+  .public-site :is(.boutique-about-card,.boutique-service-card,.testimonial-card,.blogs-card) { border-radius:16px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .public-site *, .public-site *::before,.public-site *::after { animation:none !important; transition:none !important; }
+}
+
+.public-site .boutique-hero-core { font-size: 30px; letter-spacing: -2px; }
+.public-site .boutique-loader-wordmark { max-width: 95vw; font-size: clamp(14px,3vw,25px); }
+.public-site .contact-cta-footer-mark { color: #dcc48e; }

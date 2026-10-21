@@ -3,22 +3,21 @@
    Same colors + fonts as the About and Contact pages.
    Everything is scoped under .services-page.
    ========================================================== */
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600&display=swap");
 
 .services-page {
-  --ink: #0e2f2c;
-  --ink-soft: #1d4a45;
-  --paper: #f5f7f4;
-  --tint: #eaf0eb;
-  --line: #d9e0db;
+  --ink: #0c3028;
+  --ink-soft: #245447;
+  --paper: #f8f4eb;
+  --tint: #f0eadc;
+  --line: #e3dccd;
   --text: #1b2624;
   --muted: #5d6b67;
-  --brass: #b5842f;
+  --brass: #896825;
   --gutter: clamp(18px, 5vw, 48px);
   --radius: 14px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-  font-family: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   color: var(--text);
   background: var(--paper);
   overflow-x: clip;
@@ -32,7 +31,7 @@
 }
 
 .services-page h1, .services-page h2, .services-page h3 {
-  font-family: "Fraunces", Georgia, serif;
+  font-family: "Instrument Serif", Georgia, serif;
   font-weight: 500;
   margin: 0;
   color: var(--ink);
@@ -107,7 +106,7 @@
   z-index: -1;
   right: 1%;
   bottom: -0.2em;
-  font-family: "Fraunces", Georgia, serif;
+  font-family: "Instrument Serif", Georgia, serif;
   font-size: clamp(5rem, 17vw, 14rem);
   line-height: 1;
   letter-spacing: -0.04em;
@@ -285,7 +284,7 @@
   height: clamp(260px, 32vw, 380px);
   overflow: hidden;
   border-radius: var(--radius);
-  background: #1d4a45;
+  background: #245447;
 }
 .services-page .services-page-approach-image > img {
   display: block;
@@ -328,7 +327,7 @@
   transition: padding-left 0.3s var(--ease);
 }
 .services-page .services-page-approach-step:hover { padding-left: 6px; }
-.services-page .services-page-step-number { flex-shrink: 0; min-width: 30px; font-family: "Fraunces", Georgia, serif; font-size: 1.4rem; color: #e0b765; }
+.services-page .services-page-step-number { flex-shrink: 0; min-width: 30px; font-family: "Instrument Serif", Georgia, serif; font-size: 1.4rem; color: #e0b765; }
 .services-page .services-page-step-copy { flex: 1; min-width: 0; }
 .services-page .services-page-step-copy h3 { font-size: 1.05rem; color: #fff; }
 .services-page .services-page-step-copy p { margin-top: 5px; font-size: 0.85rem; line-height: 1.6; color: #b9ccc6; }
@@ -435,12 +434,12 @@
 }
 
 .services-page-card-title-link:hover {
-  color: #0c8575;
+  color: #896825;
 }
 
 .services-page-card-image:focus-visible,
 .services-page-card-title-link:focus-visible,
 .services-page-card-link:focus-visible {
-  outline: 2px solid #0c8575;
+  outline: 2px solid #896825;
   outline-offset: 3px;
 }

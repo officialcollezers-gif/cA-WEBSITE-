@@ -22,16 +22,16 @@
   --hero-delay: 0.85s;
   --hero-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-  --hero-ink: #183d37;
-  --hero-teal: #0c8575;
-  --hero-mint: #a9d8c9;
+  --hero-ink: #123c32;
+  --hero-teal: #896825;
+  --hero-mint: #dcc48e;
   --hero-muted: #66756f;
   --hero-line: rgba(24, 61, 55, 0.13);
 
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: #f7f8f5;
+  background: #faf7ef;
 }
 
 /* Architectural column lines, fading out toward the bottom */
@@ -308,8 +308,8 @@
   background: radial-gradient(
     120% 90% at 20% 0%,
     #24564d 0%,
-    #183d37 55%,
-    #102e29 100%
+    #123c32 55%,
+    #082a23 100%
   );
   box-shadow:
     0 40px 80px -30px rgba(16, 46, 41, 0.55),

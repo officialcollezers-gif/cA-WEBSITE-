@@ -288,7 +288,7 @@ export default function Hero() {
                 </svg>
 
                 <div className="boutique-hero-core">
-                  f<span>.</span>
+                  RG<span>.</span>
                 </div>
 
                 {SERVICES.map((service, index) => {

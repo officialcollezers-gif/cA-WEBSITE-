@@ -3,11 +3,11 @@
 ========================================= */
 
 .boutique-footer {
-  --bf-bg: #183d37;
-  --bf-text: #f7f8f5;
+  --bf-bg: #123c32;
+  --bf-text: #faf7ef;
   --bf-muted: #b2c9c0;
   --bf-faint: #9bb7ab;
-  --bf-accent: #a9d8c9;
+  --bf-accent: #dcc48e;
   --bf-line: rgba(255, 255, 255, 0.15);
   --bf-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -100,7 +100,7 @@
   font-weight: 400;
   letter-spacing: -0.8px;
   color: var(--bf-accent); /* fallback if background-clip isn't supported */
-  background: linear-gradient(90deg, #a9d8c9 0%, #e6f7f0 50%, #a9d8c9 100%);
+  background: linear-gradient(90deg, #dcc48e 0%, #e6f7f0 50%, #dcc48e 100%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
