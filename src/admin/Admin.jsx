@@ -120,6 +120,51 @@ function HtmlEditor({ value, onChange }) {
     </div>
   );
 }
+function PasswordLogin({ onLogin, onError }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  async function submit(event) {
+    event.preventDefault();
+    if (busy) return;
+    setBusy(true);
+    try {
+      await request("/api/auth", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+      setPassword("");
+      await onLogin();
+    } catch (e) {
+      onError(e.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <form onSubmit={submit}>
+      <Field
+        label="Admin email"
+        type="email"
+        autoComplete="username"
+        required
+        value={email}
+        onChange={setEmail}
+      />
+      <Field
+        label="Admin password"
+        type="password"
+        autoComplete="current-password"
+        required
+        value={password}
+        onChange={setPassword}
+      />
+      <button type="submit" disabled={busy}>
+        {busy ? "Signing in…" : "Sign in"}
+      </button>
+    </form>
+  );
+}
 function GoogleLogin({ clientId, onLogin, onError }) {
   const ref = useRef(null);
   const callback = useRef(onLogin);
@@ -465,6 +510,8 @@ export default function Admin() {
           <p>Manage your website, articles and enquiries in one place.</p>
           {!auth && !error ? (
             <p>Checking sign-in…</p>
+          ) : auth?.loginMethod === "password" && auth?.configured ? (
+            <PasswordLogin onLogin={load} onError={setError} />
           ) : auth?.clientId ? (
             <GoogleLogin
               clientId={auth.clientId}
@@ -473,8 +520,9 @@ export default function Admin() {
             />
           ) : (
             <p className="admin-alert">
-              Google sign-in needs configuration. Follow SETUP.md to add the
-              Google client ID, administrator email and session secret.
+              Complete the Apps Script connection to enable admin sign-in.
+              Follow APPS_SCRIPT_SETUP.md; no Google Cloud project or
+              service-account key is needed.
             </p>
           )}
           {error && (
@@ -577,8 +625,8 @@ export default function Admin() {
                 <h2>Connect your content home.</h2>
                 <p>
                   {data.configured
-                    ? "Your Google credentials are configured. Create the content tabs and import the starter website data."
-                    : "Add the Google Sheet ID and service account credentials to your server environment. SETUP.md walks through the steps."}
+                    ? "Your Sheet connection is configured. Create the content tabs and import the starter website data."
+                    : "Add the Apps Script deployment URL and connection secret to the admin project in Vercel. APPS_SCRIPT_SETUP.md walks through the steps."}
                 </p>
                 <button
                   disabled={busy || !data.configured}

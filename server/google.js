@@ -1,10 +1,14 @@
+import { appsScriptConfigured, scriptRequest } from "./apps-script.js";
 import { JWT } from "google-auth-library";
 let client;
 export function configured() {
-  return !!(
-    process.env.GOOGLE_SHEET_ID &&
-    process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
-    process.env.GOOGLE_PRIVATE_KEY
+  return (
+    appsScriptConfigured() ||
+    !!(
+      process.env.GOOGLE_SHEET_ID &&
+      process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
+      process.env.GOOGLE_PRIVATE_KEY
+    )
   );
 }
 async function sheets(path, method = "GET", body) {
@@ -43,11 +47,17 @@ async function sheets(path, method = "GET", body) {
   return response.json();
 }
 export async function initialized() {
+  if (appsScriptConfigured())
+    return (await scriptRequest("status")).initialized;
   const data = await sheets("?fields=sheets.properties.title");
   const titles = data.sheets.map((s) => s.properties.title);
   return titles.includes("Content") && titles.includes("Enquiries");
 }
 export async function initializeTabs() {
+  if (appsScriptConfigured()) {
+    await scriptRequest("initialize");
+    return;
+  }
   const data = await sheets("?fields=sheets.properties.title");
   const titles = data.sheets.map((s) => s.properties.title);
   const missing = ["Content", "Enquiries"].filter((t) => !titles.includes(t));
@@ -59,11 +69,17 @@ export async function initializeTabs() {
     });
 }
 export async function readRows(tab) {
+  if (appsScriptConfigured())
+    return (await scriptRequest("read", { tab })).rows;
   return (
     (await sheets(`/values/${encodeURIComponent(`${tab}!A:E`)}`)).values || []
   );
 }
 export async function appendRows(tab, values) {
+  if (appsScriptConfigured()) {
+    await scriptRequest("append", { tab, values });
+    return;
+  }
   await sheets(
     `/values/${encodeURIComponent(`${tab}!A:E`)}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
     "POST",

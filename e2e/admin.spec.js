@@ -142,9 +142,50 @@ test("unauthenticated admin displays a setup screen without editable content", a
     page.getByRole("heading", { name: /Behind the scenes/ }),
   ).toBeVisible();
   await expect(
-    page.getByText("Google sign-in needs configuration.", { exact: false }),
+    page.getByText("Complete the Apps Script connection", { exact: false }),
   ).toBeVisible();
   await expect(page.getByRole("button", { name: "Save changes" })).toHaveCount(
     0,
   );
+});
+
+test("Apps Script admin displays password login and handles invalid and valid credentials", async ({
+  page,
+}) => {
+  await workspace(page);
+  await page.unroute("**/api/auth");
+  let loggedIn = false;
+  await page.route("**/api/auth", async (route) => {
+    if (route.request().method() === "POST") {
+      const data = route.request().postDataJSON();
+      if (data.password !== "test-password-only")
+        return route.fulfill({
+          status: 401,
+          json: { error: "Incorrect admin email or password." },
+        });
+      loggedIn = true;
+    }
+    await route.fulfill({
+      json: {
+        loginMethod: "password",
+        configured: true,
+        clientId: "",
+        user: loggedIn ? "admin@example.com" : null,
+      },
+    });
+  });
+  await page.goto("/admin");
+  await page.getByLabel("Admin email").fill("admin@example.com");
+  await expect(page.getByLabel("Admin password")).toHaveAttribute(
+    "type",
+    "password",
+  );
+  await page.getByLabel("Admin password").fill("wrong");
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await expect(page.getByRole("alert")).toContainText(
+    "Incorrect admin email or password.",
+  );
+  await page.getByLabel("Admin password").fill("test-password-only");
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await expect(page.getByText("Google Sheets connected")).toBeVisible();
 });

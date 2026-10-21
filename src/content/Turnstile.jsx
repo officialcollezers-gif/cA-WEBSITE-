@@ -35,6 +35,11 @@ export default function Turnstile({ onToken, resetKey = 0 }) {
         return r.json();
       })
       .then(async (config) => {
+        if (config.protection === "rate-limit") {
+          // Readiness signal for backend submission limits; not a CAPTCHA token.
+          if (active) callback.current("server-rate-limit");
+          return;
+        }
         if (!config.turnstileSiteKey)
           throw new Error(
             "Online enquiries are not configured yet. Please contact us directly.",

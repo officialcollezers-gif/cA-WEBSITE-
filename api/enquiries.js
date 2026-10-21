@@ -1,5 +1,13 @@
+import { createHmac } from "node:crypto";
+import { appsScriptConfigured, scriptRequest } from "../server/apps-script.js";
 import { randomUUID } from "node:crypto";
-import { endpoint, body, publicCors, publicWriteOrigin, fail } from "../server/http.js";
+import {
+  endpoint,
+  body,
+  publicCors,
+  publicWriteOrigin,
+  fail,
+} from "../server/http.js";
 import { appendRows, configured, initialized } from "../server/google.js";
 export default endpoint(async (req, res) => {
   if (publicCors(req, res, ["POST"])) return;
@@ -36,6 +44,30 @@ export default endpoint(async (req, res) => {
       400,
       "Provide your name, valid email and phone, message, and contact consent.",
     );
+  if (appsScriptConfigured() && !process.env.TURNSTILE_SECRET_KEY) {
+    if ((process.env.SESSION_SECRET || "").length < 32)
+      fail(503, "Server session secret is missing.");
+    const ip = String(
+      req.headers["x-vercel-forwarded-for"] ||
+        req.headers["x-forwarded-for"] ||
+        req.socket?.remoteAddress ||
+        "unknown",
+    )
+      .split(",")[0]
+      .trim();
+    const rateKey = createHmac("sha256", process.env.SESSION_SECRET)
+      .update(ip)
+      .digest("hex");
+    await scriptRequest("enquiry", {
+      rateKey,
+      record: {
+        ...record,
+        id: randomUUID(),
+        createdAt: new Date().toISOString(),
+      },
+    });
+    return { ok: true };
+  }
   if (!process.env.TURNSTILE_SECRET_KEY)
     fail(503, "Enquiry spam protection is not configured.");
   const response = await fetch(
@@ -52,7 +84,8 @@ export default endpoint(async (req, res) => {
   const challenge = await response.json();
   if (
     !challenge.success ||
-    challenge.hostname !== new URL(process.env.PUBLIC_SITE_ORIGIN || process.env.APP_ORIGIN).hostname
+    challenge.hostname !==
+      new URL(process.env.PUBLIC_SITE_ORIGIN || process.env.APP_ORIGIN).hostname
   )
     fail(400, "Please complete the spam protection check again.");
   if (!configured() || !(await initialized()))

@@ -1,9 +1,9 @@
 # FinCore Advisors
 
-React/Vite website with a Google Sheets content backend, Google-authenticated
+React/Vite website with a Google Sheets content backend, password-authenticated
 admin at `/admin`, Vercel serverless APIs and protected enquiry forms.
 
-Start with [SETUP.md](SETUP.md) for Google Sheet access, admin sign-in, environment
+Start with [APPS_SCRIPT_SETUP.md](APPS_SCRIPT_SETUP.md) for Google Sheet access using Apps Script (no Google Cloud project), admin sign-in, environment
 variables, local development and Vercel deployment. Private credentials belong
 only in server environment settings.
 

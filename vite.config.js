@@ -35,6 +35,8 @@ export default defineConfig(({ mode }) => {
   // Only explicitly named server configuration is passed to Node. Vite exposes
   // only VITE_ variables to browser code; credentials must never use that prefix.
   for (const key of [
+    "APPS_SCRIPT_URL",
+    "APPS_SCRIPT_SECRET",
     "GOOGLE_SHEET_ID",
     "GOOGLE_SERVICE_ACCOUNT_EMAIL",
     "GOOGLE_PRIVATE_KEY",
@@ -42,7 +44,7 @@ export default defineConfig(({ mode }) => {
     "ADMIN_EMAILS",
     "SESSION_SECRET",
     "APP_ORIGIN",
-        "PUBLIC_SITE_ORIGIN",
+    "PUBLIC_SITE_ORIGIN",
     "TURNSTILE_SITE_KEY",
     "TURNSTILE_SECRET_KEY",
   ])
