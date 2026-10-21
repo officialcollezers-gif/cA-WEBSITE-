@@ -9,26 +9,32 @@ export function sameOrigin(req) {
 }
 // Public content and enquiry APIs accept only the explicitly configured public
 // site origin. Admin/auth endpoints continue requiring APP_ORIGIN exclusively.
-export function publicCors(req, res, methods = ['GET']) {
-  const allowed = [process.env.PUBLIC_SITE_ORIGIN, process.env.APP_ORIGIN].filter(Boolean).map(v => new URL(v).origin);
+export function publicCors(req, res, methods = ["GET"]) {
+  const allowed = [process.env.PUBLIC_SITE_ORIGIN, process.env.APP_ORIGIN]
+    .filter(Boolean)
+    .map((v) => new URL(v).origin);
   const origin = req.headers.origin;
-  if (origin && !allowed.includes(origin)) fail(403, 'Request origin is not allowed.');
-  res.setHeader('Vary', 'Origin');
-  if (origin) res.setHeader('Access-Control-Allow-Origin', origin);
-  if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Methods', methods.join(', '));
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Max-Age', '600');
-    res.statusCode = 204; res.end(); return true;
+  if (origin && !allowed.includes(origin))
+    fail(403, "Request origin is not allowed.");
+  res.setHeader("Vary", "Origin");
+  if (origin) res.setHeader("Access-Control-Allow-Origin", origin);
+  if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Methods", methods.join(", "));
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Max-Age", "600");
+    res.statusCode = 204;
+    res.end();
+    return true;
   }
   return false;
 }
 export function publicWriteOrigin(req) {
   const expected = process.env.PUBLIC_SITE_ORIGIN || process.env.APP_ORIGIN;
-  if (!expected) fail(503, 'Public website origin is not configured.');
-  if (req.headers.origin !== new URL(expected).origin) fail(403, 'Request origin is not allowed.');
+  if (!expected) fail(503, "Public website origin is not configured.");
+  if (req.headers.origin !== new URL(expected).origin)
+    fail(403, "Request origin is not allowed.");
 }
-export async function body(req) {
+export async function body(req, { maxBytes = 180000 } = {}) {
   if (!/^application\/json(?:;|$)/i.test(req.headers["content-type"] || ""))
     fail(415, "Use application/json.");
   let value = req.body;
@@ -37,12 +43,12 @@ export async function body(req) {
     const chunks = [];
     for await (const chunk of req) {
       size += chunk.length;
-      if (size > 180000) fail(413, "Request is too large.");
+      if (size > maxBytes) fail(413, "Request is too large.");
       chunks.push(chunk);
     }
     value = Buffer.concat(chunks).toString();
   }
-  if (typeof value === "string" && Buffer.byteLength(value) > 180000)
+  if (typeof value === "string" && Buffer.byteLength(value) > maxBytes)
     fail(413, "Request is too large.");
   try {
     return typeof value === "string" ? JSON.parse(value) : value;

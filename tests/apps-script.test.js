@@ -1,3 +1,4 @@
+import media from "../api/media.js";
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -25,6 +26,29 @@ const props = new Map(
   }),
 );
 const tabs = new Map();
+const driveFiles = new Map();
+const folderId = "website-folder-123";
+function makeFile(blob, parent = folderId) {
+  const id = "drive-image-" + randomUUID();
+  const file = {
+    getId: () => id,
+    getBlob: () => blob,
+    isTrashed: () => false,
+    getParents: () => {
+      let read = false;
+      return {
+        hasNext: () => !read,
+        next: () => {
+          read = true;
+          return { getId: () => parent };
+        },
+      };
+    },
+  };
+  driveFiles.set(id, file);
+  return file;
+}
+const folder = { getId: () => folderId, createFile: (blob) => makeFile(blob) };
 const cache = new Map();
 let locked = false;
 let server, base;
@@ -51,6 +75,17 @@ const makeTab = () => {
   };
 };
 const context = createContext({
+  DriveApp: {
+    createFolder: () => folder,
+    getFolderById: (id) => {
+      assert.equal(id, folderId);
+      return folder;
+    },
+    getFileById: (id) => {
+      if (!driveFiles.has(id)) throw new Error("Not found");
+      return driveFiles.get(id);
+    },
+  },
   PropertiesService: {
     getScriptProperties: () => ({
       getProperty: (k) => props.get(k) || null,
@@ -60,6 +95,7 @@ const context = createContext({
     }),
   },
   SpreadsheetApp: {
+    getUi: () => ({ alert: () => {} }),
     openById: (id) => {
       assert.equal(id, "test-sheet");
       return {
@@ -103,6 +139,13 @@ const context = createContext({
     DigestAlgorithm: { SHA_256: "sha256" },
     Charset: { UTF_8: "utf8" },
     getUuid: randomUUID,
+    base64Decode: (str) => [...Buffer.from(str, "base64")],
+    base64Encode: (bytes) => Buffer.from(bytes).toString("base64"),
+    newBlob: (bytes, type, name) => ({
+      getBytes: () => bytes,
+      getContentType: () => type,
+      getName: () => name,
+    }),
     computeDigest: (_a, v) => [...createHash("sha256").update(v).digest()],
   },
 });
@@ -139,8 +182,11 @@ before(async () => {
     "/api/content": content,
     "/api/enquiries": enquiries,
     "/api/config": config,
+    "/api/media": media,
   };
-  server = createServer((req, res) => routes[req.url](req, res));
+  server = createServer((req, res) =>
+    routes[new URL(req.url, "http://localhost").pathname](req, res),
+  );
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   base = "http://127.0.0.1:" + server.address().port;
   process.env.APP_ORIGIN = base;
@@ -303,4 +349,107 @@ test("Apps Script throttles repeated password failures and blocks invalid tabs",
     429,
   );
   assert.equal(gas({ secret, action: "read", tab: "Unrelated" }).status, 400);
+});
+
+test("Drive upload requires admin auth, valid image bytes and one-time Drive authorization", async () => {
+  const png = Buffer.from(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg==",
+    "base64",
+  );
+  const data = {
+    name: "service.png",
+    mimeType: "image/png",
+    data: png.toString("base64"),
+  };
+  assert.equal((await call("/api/media", { data })).status, 401);
+  assert.equal(
+    (
+      await call("/api/media", {
+        authorized: true,
+        data: { ...data, data: Buffer.from("<svg/>").toString("base64") },
+      })
+    ).status,
+    400,
+  );
+  assert.equal(
+    (await call("/api/media", { authorized: true, data })).status,
+    409,
+  );
+  context.enableImageUploads();
+  assert.equal(props.get("MEDIA_FOLDER_ID"), folderId);
+  const uploaded = await call("/api/media", { authorized: true, data });
+  assert.equal(uploaded.status, 200);
+  const image = await uploaded.json();
+  assert.match(image.url, /\/api\/media\?id=/);
+  assert.ok(driveFiles.has(image.fileId));
+  const download = await realFetch(image.url);
+  assert.equal(download.status, 200);
+  assert.equal(download.headers.get("content-type"), "image/png");
+  assert.match(download.headers.get("cache-control"), /public/);
+  assert.deepEqual(Buffer.from(await download.arrayBuffer()), png);
+  const outside = makeFile(
+    { getBytes: () => [...png], getContentType: () => "image/png" },
+    "some-other-private-folder",
+  );
+  assert.equal((await call("/api/media?id=" + outside.getId())).status, 404);
+  assert.equal((await call("/api/media?id=invalid")).status, 400);
+  const state = await (await call("/api/admin", { authorized: true })).json();
+  const category = state.content.categories[0];
+  category.subServices[0].image = image.url;
+  assert.equal(
+    (
+      await call("/api/admin", {
+        authorized: true,
+        data: { action: "save", kind: "categories", record: category },
+      })
+    ).status,
+    200,
+  );
+  const published = await (await call("/api/content")).json();
+  assert.equal(
+    published.categories.find((c) => c.id === category.id).subServices[0].image,
+    image.url,
+  );
+});
+test("Drive uploads can exceed the old JSON limit while still enforcing the 1 MB image cap", async () => {
+  const buffer = Buffer.alloc(200000);
+  Buffer.from("89504e470d0a1a0a", "hex").copy(buffer);
+  assert.equal(
+    (
+      await call("/api/media", {
+        authorized: true,
+        data: {
+          name: "large.png",
+          mimeType: "image/png",
+          data: buffer.toString("base64"),
+        },
+      })
+    ).status,
+    200,
+  );
+  const tooLarge = Buffer.alloc(1024 * 1024 + 1);
+  Buffer.from("89504e470d0a1a0a", "hex").copy(tooLarge);
+  assert.equal(
+    (
+      await call("/api/media", {
+        authorized: true,
+        data: {
+          name: "large.png",
+          mimeType: "image/png",
+          data: tooLarge.toString("base64"),
+        },
+      })
+    ).status,
+    400,
+  );
+  const request = await realFetch(base + "/api/media", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Origin: "https://attacker.example",
+      Cookie: cookie,
+    },
+    body: JSON.stringify({}),
+  });
+  assert.equal(request.status, 403);
 });

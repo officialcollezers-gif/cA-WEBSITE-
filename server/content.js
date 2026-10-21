@@ -68,7 +68,10 @@ const required = (v, name) => {
 };
 const image = (v) => {
   const s = text(v, 2000);
-  if (s && !/^https:\/\//i.test(s) && !/^\/(?!\/)/.test(s))
+  const localImage =
+    process.env.NODE_ENV !== "production" &&
+    /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?\//.test(s);
+  if (s && !localImage && !/^https:\/\//i.test(s) && !/^\/(?!\/)/.test(s))
     throw Object.assign(
       new Error("Images must use HTTPS URLs or local paths."),
       { status: 400 },
@@ -141,12 +144,10 @@ export function validateRecord(kind, raw) {
         contentHtml: html(text(s.contentHtml, 15000)),
         inclusions: list(s.inclusions),
         documents: list(s.documents),
-        faqs: (Array.isArray(s.faqs) ? s.faqs : [])
-          .slice(0, 30)
-          .map((f) => ({
-            question: text(f.question),
-            answer: text(f.answer, 3000),
-          })),
+        faqs: (Array.isArray(s.faqs) ? s.faqs : []).slice(0, 30).map((f) => ({
+          question: text(f.question),
+          answer: text(f.answer, 3000),
+        })),
       }));
     if (new Set(subServices.map((s) => s.slug)).size !== subServices.length)
       throw Object.assign(
@@ -178,7 +179,10 @@ export function assemble(rows, publicOnly = false) {
   for (const [kind, id, json] of rows) {
     if (!["settings", "categories", "blogs", "pages"].includes(kind)) continue;
     try {
-      records.set(`${kind}:${id}`, { kind, value: rebrandLegacyContent(JSON.parse(json)) });
+      records.set(`${kind}:${id}`, {
+        kind,
+        value: rebrandLegacyContent(JSON.parse(json)),
+      });
     } catch {
       throw new Error("Invalid content row in Google Sheets.");
     }

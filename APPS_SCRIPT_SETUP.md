@@ -142,3 +142,8 @@ The install/build scripts bundle the current server-side HTML sanitizer so its
 ESM parser works with Vercel's CommonJS runtime loader. Generated files under
 `server/generated` are ignored by Git and rebuilt on install. The API test suite
 runs with Node's require-ESM support disabled to exercise this deployment constraint.
+
+## Google Drive image uploads
+
+See [DRIVE_IMAGES.md](DRIVE_IMAGES.md) for the one-time script update, Drive
+permission and upload controls. Existing secrets and admin passwords are reused.

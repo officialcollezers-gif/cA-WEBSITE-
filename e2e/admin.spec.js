@@ -59,8 +59,14 @@ test("public routes render starter services, blogs and article details without r
     });
     if (path === "/") {
       await expect(page.locator(".cms-category-grid > a")).toHaveCount(6);
-      await expect(page.getByText("Service category not found", { exact: true })).toHaveCount(0);
-      await expect(page.locator('.cms-category-grid a[href="/services/income-tax-advisory"]')).toContainText('Income Tax Advisory');
+      await expect(
+        page.getByText("Service category not found", { exact: true }),
+      ).toHaveCount(0);
+      await expect(
+        page.locator(
+          '.cms-category-grid a[href="/services/income-tax-advisory"]',
+        ),
+      ).toContainText("Income Tax Advisory");
     }
   }
   expect(errors).toEqual([]);
@@ -193,4 +199,76 @@ test("Apps Script admin displays password login and handles invalid and valid cr
   await page.getByLabel("Admin password").fill("test-password-only");
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(page.getByText("Google Sheets connected")).toBeVisible();
+});
+
+test("service image upload fills its URL, preserves edits during upload and saves the Drive image", async ({
+  page,
+}) => {
+  const { state } = await workspace(page);
+  await page.route('https://images.unsplash.com/**', route => route.fulfill({status:200,contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg==','base64')}));
+  let release;
+  const gate = new Promise((resolve) => {
+    release = resolve;
+  });
+  let payload;
+  const imageUrl =
+    "https://c-a-website-admin.vercel.app/api/media?id=drive-image-browser-test";
+  await page.route("**/api/media?id=*", (route) =>
+    route.fulfill({
+      contentType: "image/png",
+      body: Buffer.from(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg==",
+        "base64",
+      ),
+    }),
+  );
+  await page.route("**/api/media", async (route) => {
+    payload = route.request().postDataJSON();
+    await gate;
+    await route.fulfill({
+      json: { fileId: "drive-image-browser-test", url: imageUrl },
+    });
+  });
+  await page.goto("/admin");
+  await page.getByRole("button", { name: "Services", exact: true }).click();
+  await page.getByRole("button", { name: /Income Tax Advisory/ }).click();
+  await expect(
+    page.getByLabel("Upload cover image url", { exact: true }),
+  ).toBeAttached();
+  const base64 = await page.evaluate(() => {
+    const c = document.createElement("canvas");
+    c.width = 16;
+    c.height = 16;
+    c.getContext("2d").fillRect(0, 0, 16, 16);
+    return c.toDataURL("image/png").split(",")[1];
+  });
+  await page
+    .getByLabel("Upload image url", { exact: true })
+    .setInputFiles({
+      name: "tax-photo.png",
+      mimeType: "image/png",
+      buffer: Buffer.from(base64, "base64"),
+    });
+  await expect(
+    page.getByRole("button", { name: "Save changes" }),
+  ).toBeDisabled();
+  await page
+    .getByRole("textbox", { name: "Short description", exact: true })
+    .fill("Updated while the image uploads.");
+  release();
+  await expect(
+    page.getByText("Uploaded to Google Drive.", { exact: false }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Image URL", { exact: true })).toHaveValue(
+    imageUrl,
+  );
+  expect(payload.mimeType).toBe("image/webp");
+  await page.getByRole("button", { name: "Save changes" }).click();
+  await expect(page.getByRole("status").filter({hasText:"Saved to Google Sheets"})).toContainText(
+    "Saved to Google Sheets",
+  );
+  const service = state.categories.find((c) => c.id === "income-tax-advisory")
+    .subServices[0];
+  expect(service.image).toBe(imageUrl);
+  expect(service.description).toBe("Updated while the image uploads.");
 });

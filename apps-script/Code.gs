@@ -133,7 +133,7 @@ function doGet() {
   return response_({
     ok: true,
     service: "CA Website Apps Script bridge",
-    version: 1,
+    version: 2,
   });
 }
 function doPost(e) {
@@ -142,7 +142,7 @@ function doPost(e) {
       !e ||
       !e.postData ||
       !e.postData.contents ||
-      e.postData.contents.length > 180000
+      e.postData.contents.length > 1500000
     )
       return response_({ ok: false, status: 400, error: "Invalid request." });
     var data;
@@ -151,6 +151,8 @@ function doPost(e) {
     } catch (_) {
       return response_({ ok: false, status: 400, error: "Invalid JSON." });
     }
+    if (data.action !== "uploadImage" && e.postData.contents.length > 180000)
+      return response_({ ok: false, status: 400, error: "Invalid request." });
     var props = PropertiesService.getScriptProperties();
     var secret = props.getProperty("BRIDGE_SECRET");
     if (!secret || !equal_(data.secret, secret))
@@ -167,8 +169,13 @@ function doPost(e) {
           initialized:
             !!sheet.getSheetByName("Content") &&
             !!sheet.getSheetByName("Enquiries"),
+          mediaReady: !!props.getProperty("MEDIA_FOLDER_ID"),
         },
       });
+    if (data.action === "uploadImage")
+      return response_({ ok: true, result: uploadImage_(data, props) });
+    if (data.action === "readImage")
+      return response_({ ok: true, result: readImage_(data, props) });
     if (data.action === "login")
       return response_({ ok: true, result: login_(data, props) });
     var lock = LockService.getScriptLock();
@@ -332,4 +339,119 @@ function enquiry_(data, sheet, props) {
   state.keys[emailKey] = emails.concat([now]);
   props.setProperty("ENQUIRY_LIMITS", JSON.stringify(state));
   return {};
+}
+
+// Run once from the bound script editor to authorize Drive and create the folder.
+// Never rerun setupWebsite: existing passwords and connection settings are kept.
+function enableImageUploads() {
+  var props = PropertiesService.getScriptProperties();
+  if (!props.getProperty("BRIDGE_SECRET"))
+    throw new Error("Set up the website connection first.");
+  var id = props.getProperty("MEDIA_FOLDER_ID");
+  var folder = id
+    ? DriveApp.getFolderById(id)
+    : DriveApp.createFolder("RAHUL G & ASSOCIATES Website Images");
+  if (!id) props.setProperty("MEDIA_FOLDER_ID", folder.getId());
+  SpreadsheetApp.getUi().alert(
+    "Drive image uploads enabled. Deploy a new version of your existing web app to activate uploads. Files stay private in Drive; the website serves uploaded images through its media API.",
+  );
+}
+function imageBytes_(data) {
+  if (
+    typeof data.data !== "string" ||
+    data.data.length > 1398104 ||
+    data.data.length % 4 ||
+    !/^[A-Za-z0-9+/]+={0,2}$/.test(data.data)
+  )
+    throw Object.assign(new Error("Invalid image data."), {
+      websiteStatus: 400,
+    });
+  var bytes = Utilities.base64Decode(data.data);
+  if (!bytes.length || bytes.length > 1048576)
+    throw Object.assign(new Error("Images must be 1 MB or smaller."), {
+      websiteStatus: 400,
+    });
+  var b = bytes.map(function (x) {
+    return (x + 256) % 256;
+  });
+  var type =
+    b.length >= 8 &&
+    [137, 80, 78, 71, 13, 10, 26, 10].every(function (v, i) {
+      return b[i] === v;
+    })
+      ? "image/png"
+      : b.length >= 3 && b[0] === 255 && b[1] === 216 && b[2] === 255
+        ? "image/jpeg"
+        : b.length >= 12 &&
+            String.fromCharCode.apply(null, b.slice(0, 4)) === "RIFF" &&
+            String.fromCharCode.apply(null, b.slice(8, 12)) === "WEBP"
+          ? "image/webp"
+          : "";
+  if (!type || type !== data.mimeType)
+    throw Object.assign(
+      new Error("Only JPEG, PNG and WebP images are supported."),
+      { websiteStatus: 400 },
+    );
+  return bytes;
+}
+function uploadImage_(data, props) {
+  var bytes = imageBytes_(data);
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    var folderId = props.getProperty("MEDIA_FOLDER_ID");
+    if (!folderId)
+      throw Object.assign(
+        new Error("Run enableImageUploads and deploy a new version first."),
+        { websiteStatus: 409 },
+      );
+    var folder = DriveApp.getFolderById(folderId);
+    var extension =
+      data.mimeType === "image/png"
+        ? ".png"
+        : data.mimeType === "image/jpeg"
+          ? ".jpg"
+          : ".webp";
+    var name =
+      String(data.name || "image")
+        .replace(/\.[^.]+$/, "")
+        .replace(/[^A-Za-z0-9 _-]/g, "")
+        .slice(0, 70) || "image";
+    var file = folder.createFile(
+      Utilities.newBlob(
+        bytes,
+        data.mimeType,
+        name + "-" + Utilities.getUuid().slice(0, 8) + extension,
+      ),
+    );
+    // Do not enable public sharing on the file or its folder.
+    return { fileId: file.getId() };
+  } finally {
+    lock.releaseLock();
+  }
+}
+function readImage_(data, props) {
+  if (!/^[A-Za-z0-9_-]{10,100}$/.test(data.fileId || ""))
+    throw Object.assign(new Error("Invalid image ID."), { websiteStatus: 400 });
+  try {
+    var folderId = props.getProperty("MEDIA_FOLDER_ID");
+    if (!folderId) throw new Error("Not configured");
+    var file = DriveApp.getFileById(data.fileId);
+    if (file.isTrashed()) throw new Error("Trashed");
+    var parents = file.getParents();
+    var managed = false;
+    while (parents.hasNext()) {
+      if (parents.next().getId() === folderId) managed = true;
+    }
+    if (!managed) throw new Error("Not a website image");
+    var blob = file.getBlob();
+    var result = {
+      data: Utilities.base64Encode(blob.getBytes()),
+      mimeType: blob.getContentType(),
+    };
+    imageBytes_(result);
+    return result;
+  } catch (_) {
+    throw Object.assign(new Error("Image not found."), { websiteStatus: 404 });
+  }
 }

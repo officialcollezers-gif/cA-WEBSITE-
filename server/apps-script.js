@@ -46,7 +46,9 @@ export async function scriptRequest(action, payload = {}) {
   if (!response.ok) fail(502, "Apps Script returned an HTTP error.");
   if (!data.ok)
     fail(
-      [400, 401, 403, 409, 429, 503].includes(data.status) ? data.status : 502,
+      [400, 401, 403, 404, 409, 429, 503].includes(data.status)
+        ? data.status
+        : 502,
       data.error || "Apps Script request failed.",
     );
   return data.result;

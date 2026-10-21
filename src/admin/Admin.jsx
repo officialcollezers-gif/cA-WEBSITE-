@@ -1,3 +1,4 @@
+import ImageField from "./ImageField";
 const publicSite = import.meta.env.VITE_PUBLIC_SITE_URL || "/";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -218,7 +219,7 @@ function GoogleLogin({ clientId, onLogin, onError }) {
   }, [clientId]);
   return <div ref={ref} />;
 }
-function ServiceEditor({ record, setRecord }) {
+function ServiceEditor({ record, setRecord, onUploadState }) {
   const [selected, setSelected] = useState(0);
   const services = record.subServices || [];
   const current = services[selected];
@@ -271,10 +272,12 @@ function ServiceEditor({ record, setRecord }) {
               value={current.slug}
               onChange={(v) => update("slug", v)}
             />
-            <Field
+            <ImageField
+              key={selected}
               label="Image URL"
               value={current.image}
               onChange={(v) => update("image", v)}
+              onUploadState={onUploadState}
             />
             <Field
               label="Image description"
@@ -403,6 +406,8 @@ export default function Admin() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
+  const [uploads, setUploads] = useState(0);
+  const onUploadState = (delta) => setUploads((n) => Math.max(0, n + delta));
   async function load() {
     const session = await request("/api/auth");
     setAuth(session);
@@ -501,7 +506,9 @@ export default function Admin() {
     return (
       <main className="admin-login">
         <div className="admin-login-card">
-          <span className="admin-eyebrow">RAHUL G & ASSOCIATES / CONTENT STUDIO</span>
+          <span className="admin-eyebrow">
+            RAHUL G & ASSOCIATES / CONTENT STUDIO
+          </span>
           <h1>
             A little clarity.
             <br />
@@ -734,7 +741,7 @@ export default function Admin() {
                   />
                   <button
                     className="admin-primary"
-                    disabled={!ready || busy}
+                    disabled={!ready || busy || uploads > 0}
                     onClick={() => {
                       setRecord(newRecord(tab));
                       setOriginalId(null);
@@ -785,7 +792,7 @@ export default function Admin() {
                       <button
                         type="button"
                         className="admin-danger"
-                        disabled={!ready || busy}
+                        disabled={!ready || busy || uploads > 0}
                         onClick={() => {
                           if (
                             window.confirm(
@@ -811,7 +818,7 @@ export default function Admin() {
                     <button
                       className="admin-primary"
                       type="submit"
-                      disabled={!ready || busy}
+                      disabled={!ready || busy || uploads > 0}
                     >
                       <Save size={16} />
                       {busy ? "Saving…" : "Save changes"}
@@ -861,10 +868,16 @@ export default function Admin() {
                           <option value="published">Published — public</option>
                         </select>
                       </label>
-                      {tab !== "pages" &&
-                        field("image", "Cover image URL", {
-                          placeholder: "https://…",
-                        })}
+                      {tab !== "pages" && (
+                        <ImageField
+                          label="Cover image URL"
+                          value={record.image}
+                          onChange={(v) =>
+                            updateRecord({ ...record, image: v })
+                          }
+                          onUploadState={onUploadState}
+                        />
+                      )}
                     </div>
                     {tab === "blogs" && (
                       <>
@@ -902,6 +915,7 @@ export default function Admin() {
                           key={originalId || "new"}
                           record={record}
                           setRecord={updateRecord}
+                          onUploadState={onUploadState}
                         />
                       </>
                     )}

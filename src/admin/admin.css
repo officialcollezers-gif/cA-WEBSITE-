@@ -592,3 +592,4 @@
   }
 }
 .admin-brand{font-size:18px;line-height:1.35;letter-spacing:-.4px;overflow-wrap:normal}
+.admin-image-field{min-width:0}.admin-upload-button{display:inline-flex;position:relative;align-items:center;padding:11px 15px;border:1px solid #ccdcd2;border-radius:6px;background:#eff5ec;color:#183d37;font-size:12px;cursor:pointer}.admin-upload-button input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.admin-upload-button:focus-within{outline:3px solid #50bca8;outline-offset:3px}.admin-image-preview{display:block;width:100%;max-width:320px;max-height:180px;object-fit:contain;border:1px solid #dce5df;border-radius:6px;margin:12px 0;background:#f3f6f0}

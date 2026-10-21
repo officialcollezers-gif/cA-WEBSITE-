@@ -7,7 +7,14 @@ function localApi() {
       server.middlewares.use(async (req, res, next) => {
         const pathname = new URL(req.url, "http://localhost").pathname;
         if (!pathname.startsWith("/api/")) return next();
-        const routes = ["auth", "content", "admin", "enquiries", "config"];
+        const routes = [
+          "auth",
+          "content",
+          "admin",
+          "enquiries",
+          "config",
+          "media",
+        ];
         const name = pathname.slice(5);
         if (!routes.includes(name)) {
           res.statusCode = 404;
