@@ -54,9 +54,33 @@ export default function SubServiceDetails() {
             <ChevronRight size={13} aria-hidden="true" />
             <span aria-current="page">{service.title}</span>
           </nav>
-          <h1>{service.title}</h1>
+          <div className={`ssd-managed-intro${service.image ? " ssd-managed-intro-with-image" : ""}`}>
+            <div>
+              <h1>{service.title}</h1>
+              {service.description && <p className="ssd-managed-description">{service.description}</p>}
+            </div>
+            {service.image && (
+              <img
+                className="ssd-managed-image"
+                src={service.image}
+                alt={service.imageAlt || service.title}
+                decoding="async"
+                fetchPriority="high"
+              />
+            )}
+          </div>
         </div>
       </header>
+      {service.overview && (
+        <section className="ssd-managed-overview" aria-labelledby="service-overview-title">
+          <div className="ssd-container">
+            <div className="ssd-managed-overview-inner">
+              <h2 id="service-overview-title">Overview</h2>
+              <p>{service.overview}</p>
+            </div>
+          </div>
+        </section>
+      )}
       {service.contentHtml && (
         <section className="ssd-html-body" aria-label={`${service.title} details`}>
           <div className="ssd-container">

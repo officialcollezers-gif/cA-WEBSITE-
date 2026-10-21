@@ -532,8 +532,22 @@
   .ssd-service-article { margin-top: 28px; padding-top: 24px; }
 }
 
-/* Individual service bodies are authored entirely in the admin HTML field. */
+/* Service introduction fields and HTML body are managed in the admin. */
 .ssd-html-header { padding: clamp(24px, 4vw, 48px) 0; }
 .ssd-html-header h1 { margin: 20px 0 0; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.15; }
 .ssd-html-body { padding: 0 0 clamp(40px, 6vw, 80px); }
 .ssd-html-body .ssd-service-article { margin: 0 auto; padding: 0; border: 0; }
+
+.ssd-managed-intro { margin-top: 28px; }
+.ssd-managed-intro-with-image { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(24px, 5vw, 64px); align-items: center; }
+.ssd-managed-intro h1 { margin-top: 0; }
+.ssd-managed-description { margin: 22px 0 0; max-width: 640px; font-size: clamp(1rem, 1.5vw, 1.15rem); line-height: 1.8; color: var(--muted, #596f66); }
+.ssd-managed-image { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 20px; }
+.ssd-managed-overview { padding: 0 0 clamp(28px, 4vw, 48px); }
+.ssd-managed-overview-inner { max-width: 960px; margin: 0 auto; padding: 28px 0; border-top: 1px solid #dce7df; border-bottom: 1px solid #dce7df; }
+.ssd-managed-overview h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin: 0 0 14px; }
+.ssd-managed-overview p { margin: 0; color: var(--muted, #596f66); line-height: 1.8; }
+@media (max-width: 720px) {
+  .ssd-managed-intro-with-image { grid-template-columns: 1fr; }
+  .ssd-managed-image { max-height: 360px; }
+}
