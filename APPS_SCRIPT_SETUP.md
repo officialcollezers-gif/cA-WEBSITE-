@@ -137,3 +137,8 @@ the deployed `/exec` URL after the one-time setup above.
 
 Server egress requires `script.google.com` and `script.googleusercontent.com`
 (Apps Script redirects) in addition to Vercel and the two website domains.
+
+The install/build scripts bundle the current server-side HTML sanitizer so its
+ESM parser works with Vercel's CommonJS runtime loader. Generated files under
+`server/generated` are ignored by Git and rebuilt on install. The API test suite
+runs with Node's require-ESM support disabled to exercise this deployment constraint.

@@ -1,4 +1,5 @@
-import sanitizeHtml from "sanitize-html";
+import bundledSanitizer from "./generated/sanitizer.cjs";
+const sanitizeHtml = bundledSanitizer.default;
 import { servicesData } from "../src/data/servicesData.js";
 import { blogsData } from "../src/data/blogsData.js";
 
